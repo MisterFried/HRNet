@@ -37,10 +37,11 @@ interface propsInterface {
 	options: Array<{ name: string; value: string }>;
 	register: UseFormRegister<FormFieldsType>;
 	errors: FieldErrors<FormFieldsType>;
+	setValue: (name: keyof FormFieldsType, value: string) => void;
 }
 
 export default function SelectInput(props: propsInterface) {
-	const { text, name, options, register, errors } = props;
+	const { text, name, options, register, errors, setValue } = props;
 
 	return (
 		<div className="flex flex-col gap-1">
@@ -51,6 +52,7 @@ export default function SelectInput(props: propsInterface) {
 				{...register(name)}
 				name="name"
 				id="name"
+				onChange={e => setValue(name, e.target.value)}
 				className="rounded-md border-[1px] border-gray-300 bg-white p-2"
 			>
 				{options.map((option, index) => (
