@@ -91,8 +91,8 @@ export default function Create() {
 			await new Promise(resolve => setTimeout(resolve, 2000));
 
 			const employeeID = uuidv4();
-			const employeeDateOfBirth = data.dateOfBirth.toISOString();
-			const employeeStartDate = data.startDate.toISOString();
+			const employeeDateOfBirth = data.dateOfBirth.toISOString().slice(0, 10);
+			const employeeStartDate = data.startDate.toISOString().slice(0, 10);
 			const newEmployee = {
 				id: employeeID,
 				dateOfBirth: employeeDateOfBirth,
