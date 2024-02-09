@@ -170,7 +170,7 @@ export default function Home() {
 			<h2 className="mb-8 text-center text-xl font-bold">Current Employees</h2>
 			<p>List of all the currently registered employees</p>
 			<div className="flex justify-between gap-4">
-				<p className="flex items-center gap-2">
+				<label className="flex items-center gap-2" htmlFor="paginate">
 					Show{" "}
 					<select
 						{...register("paginate")}
@@ -184,7 +184,7 @@ export default function Home() {
 						<option value="15">15</option>
 					</select>{" "}
 					records
-				</p>
+				</label>
 				<input
 					{...register("search")}
 					type="text"
