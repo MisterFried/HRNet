@@ -84,10 +84,7 @@ export default function Home() {
 				JSON.stringify(employeesStore)
 			) as Array<EmployeesInterface>;
 
-			const employeesPaginated = employeesCopy.slice(
-				page * perPage + 1,
-				(page + 1) * perPage + 1
-			);
+			const employeesPaginated = employeesCopy.slice(page * perPage, (page + 1) * perPage);
 
 			if (employeesPaginated.length === 0) page >= 1 ? setPage(page - 1) : setPage(0);
 			else setPage(page);
@@ -104,7 +101,7 @@ export default function Home() {
 	}, [paginate, perPage, page]);
 
 	useEffect(() => {
-		setTotalPages(Math.ceil((employeesStore.length - 1) / perPage));
+		setTotalPages(Math.ceil(employeesStore.length / perPage));
 	}, [employeesStore, perPage]);
 
 	function handleDeleteEmployee(id: string) {
@@ -348,9 +345,9 @@ export default function Home() {
 			<div className="flex justify-between gap-4">
 				<span className="text-lg">
 					Showing {page * perPage + 1} to{" "}
-					{(page + 1) * perPage + 1 >= employeesStore.length
+					{(page + 1) * perPage >= employeesStore.length
 						? employeesStore.length
-						: (page + 1) * perPage + 1}{" "}
+						: (page + 1) * perPage}{" "}
 					of {employeesStore.length} records
 				</span>
 				<menu className="flex gap-4">
