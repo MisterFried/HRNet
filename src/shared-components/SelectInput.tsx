@@ -50,8 +50,8 @@ export default function SelectInput(props: propsInterface) {
 			</label>
 			<select
 				{...register(name)}
-				name="name"
-				id="name"
+				name={name}
+				id={name}
 				onChange={e => setValue(name, e.target.value)}
 				className="rounded-md border-[1px] border-gray-300 bg-white p-2"
 			>
