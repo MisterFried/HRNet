@@ -10,7 +10,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 
 // ** Import third party
 import { toast } from "react-toastify";
-import { useForm } from "react-hook-form";
+import { get, useForm } from "react-hook-form";
 
 // ** Import shared components
 
@@ -37,6 +37,7 @@ import departments from "../../utils/departments";
 
 // ** Import Types
 import { EmployeesInterface } from "../../types/employeesType";
+import OrderTh from "../../shared-components/table/OrderTH";
 
 // ** Types
 
@@ -165,6 +166,29 @@ export default function Home() {
 		}
 	}
 
+	const headers = [
+		{ title: "First Name", sortText: "firstName" },
+		{ title: "Last Name", sortText: "lastName" },
+		{ title: "Start Name", sortText: "startDate" },
+		{ title: "Department", sortText: "department" },
+		{ title: "Date of Birth", sortText: "dateOfBirth" },
+		{ title: "Street", sortText: "street" },
+		{ title: "City", sortText: "city" },
+		{ title: "State", sortText: "state" },
+		{ title: "Zip", sortText: "zip" },
+	];
+
+	const getTdValue = (employee, sortText) => {
+		console.log(employee, sortText);
+		if (sortText === "department") {
+			return getDepartmentName(employee[sortText]);
+		} else if (sortText === "state") {
+			return getStateName(employee[sortText]);
+		} else {
+			return employee[sortText];
+		}
+	};
+
 	return (
 		<main className="mx-auto flex w-fit flex-col gap-4 p-4">
 			<h2 className="mb-8 text-center text-xl font-bold">Current Employees</h2>
@@ -196,106 +220,17 @@ export default function Home() {
 			<table>
 				<thead>
 					<tr className="bg-main-200 font-special">
-						<th className="relative border-[1px] border-gray-400 px-4 py-4 pr-8">
-							First Name
-							<ChevronUp
-								onClick={() => reorderAlphabetically("asc", "firstName")}
-								className="absolute bottom-2/4 right-1 cursor-pointer"
-							/>
-							<ChevronDown
-								onClick={() => reorderAlphabetically("desc", "firstName")}
-								className="absolute right-1 top-2/4 cursor-pointer"
-							/>
-						</th>
-						<th className="relative border-[1px] border-gray-400 px-4 py-4 pr-8">
-							Last Name
-							<ChevronUp
-								onClick={() => reorderAlphabetically("asc", "lastName")}
-								className="absolute bottom-2/4 right-1 cursor-pointer"
-							/>
-							<ChevronDown
-								onClick={() => reorderAlphabetically("desc", "lastName")}
-								className="absolute right-1 top-2/4 cursor-pointer"
-							/>
-						</th>
-						<th className="relative border-[1px] border-gray-400 px-4 py-4 pr-8">
-							Start date
-							<ChevronUp
-								onClick={() => reorderAlphabetically("asc", "startDate")}
-								className="absolute bottom-2/4 right-1 cursor-pointer"
-							/>
-							<ChevronDown
-								onClick={() => reorderAlphabetically("desc", "startDate")}
-								className="absolute right-1 top-2/4 cursor-pointer"
-							/>
-						</th>
-						<th className="relative border-[1px] border-gray-400 px-4 py-4 pr-8">
-							Department
-							<ChevronUp
-								onClick={() => reorderAlphabetically("asc", "department")}
-								className="absolute bottom-2/4 right-1 cursor-pointer"
-							/>
-							<ChevronDown
-								onClick={() => reorderAlphabetically("desc", "department")}
-								className="absolute right-1 top-2/4 cursor-pointer"
-							/>
-						</th>
-						<th className="relative border-[1px] border-gray-400 px-4 py-4 pr-8">
-							Date of Birth
-							<ChevronUp
-								onClick={() => reorderAlphabetically("asc", "dateOfBirth")}
-								className="absolute bottom-2/4 right-1 cursor-pointer"
-							/>
-							<ChevronDown
-								onClick={() => reorderAlphabetically("desc", "dateOfBirth")}
-								className="absolute right-1 top-2/4 cursor-pointer"
-							/>
-						</th>
-						<th className="relative border-[1px] border-gray-400 px-4 py-4 pr-8">
-							Street
-							<ChevronUp
-								onClick={() => reorderAlphabetically("asc", "street")}
-								className="absolute bottom-2/4 right-1 cursor-pointer"
-							/>
-							<ChevronDown
-								onClick={() => reorderAlphabetically("desc", "street")}
-								className="absolute right-1 top-2/4 cursor-pointer"
-							/>
-						</th>
-						<th className="relative border-[1px] border-gray-400 px-4 py-4 pr-8">
-							City
-							<ChevronUp
-								onClick={() => reorderAlphabetically("asc", "city")}
-								className="absolute bottom-2/4 right-1 cursor-pointer"
-							/>
-							<ChevronDown
-								onClick={() => reorderAlphabetically("desc", "city")}
-								className="absolute right-1 top-2/4 cursor-pointer"
-							/>
-						</th>
-
-						<th className="relative border-[1px] border-gray-400 px-4 py-4 pr-8">
-							State
-							<ChevronUp
-								onClick={() => reorderAlphabetically("asc", "state")}
-								className="absolute bottom-2/4 right-1 cursor-pointer"
-							/>
-							<ChevronDown
-								onClick={() => reorderAlphabetically("desc", "state")}
-								className="absolute right-1 top-2/4 cursor-pointer"
-							/>
-						</th>
-						<th className="relative border-[1px] border-gray-400 px-4 py-4 pr-8">
-							Zip Code
-							<ChevronUp
-								onClick={() => reorderAlphabetically("asc", "zip")}
-								className="absolute bottom-2/4 right-1 cursor-pointer"
-							/>
-							<ChevronDown
-								onClick={() => reorderAlphabetically("desc", "zip")}
-								className="absolute right-1 top-2/4 cursor-pointer"
-							/>
-						</th>
+						{headers.map(header => {
+							return (
+								<OrderTh
+									key={`th_${header.sortText}`}
+									title={header.title}
+									reorderAlphabetically={direction =>
+										reorderAlphabetically(direction, header.sortText)
+									}
+								/>
+							);
+						})}
 
 						<th className="relative border-[1px] border-gray-400 px-4 py-4">Actions</th>
 					</tr>
@@ -316,33 +251,16 @@ export default function Home() {
 								key={employee.id}
 								className="transition-all odd:bg-main-100 even:bg-main-50 hover:bg-orange-200"
 							>
-								<td className="border-[1px] border-gray-400 p-2 px-4">
-									{employee.firstName}
-								</td>
-								<td className="border-[1px] border-gray-400 p-2 px-4">
-									{employee.lastName}
-								</td>
-								<td className="border-[1px] border-gray-400 p-2 px-4">
-									{employee.startDate}
-								</td>
-								<td className="border-[1px] border-gray-400 p-2 px-4">
-									{getDepartmentName(employee.department)}
-								</td>
-								<td className="border-[1px] border-gray-400 p-2 px-4">
-									{employee.dateOfBirth}
-								</td>
-								<td className="border-[1px] border-gray-400 p-2 px-4">
-									{employee.street}
-								</td>
-								<td className="border-[1px] border-gray-400 p-2 px-4">
-									{employee.city}
-								</td>
-								<td className="border-[1px] border-gray-400 p-2 px-4">
-									{`${employee.state} (${getStateName(employee.state)})`}
-								</td>
-								<td className="border-[1px] border-gray-400 p-2 px-4">
-									{employee.zip}
-								</td>
+								{headers.map(header => {
+									return (
+										<td
+											key={`td_${header.sortText}`}
+											className="border-[1px] border-gray-400 p-2 px-4"
+										>
+											{getTdValue(employee, header.sortText)}
+										</td>
+									);
+								})}
 								<td className="border-[1px] border-gray-400 p-2 px-4">
 									<button
 										onClick={() => handleDeleteEmployee(employee.id)}

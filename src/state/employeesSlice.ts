@@ -1,7 +1,47 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { EmployeesInterface } from "../types/employeesType";
 
-const initialState: { employees: Array<EmployeesInterface> } = { employees: [] };
+const initialState: { employees: Array<EmployeesInterface> } = {
+	// Create 10 default employees
+	employees: [
+		{
+			firstName: "Paul",
+			lastName: "Doe",
+			dateOfBirth: "01/01/1990",
+			startDate: "01/01/2020",
+			street: "123 Main St",
+			city: "Anytown",
+			state: "NY",
+			zip: "12345",
+			department: "legal",
+			id: "1",
+		},
+		{
+			firstName: "John",
+			lastName: "Doe",
+			dateOfBirth: "01/01/1990",
+			startDate: "01/01/2020",
+			street: "123 Main St",
+			city: "Anytown",
+			state: "NY",
+			zip: "12345",
+			department: "hr",
+			id: "2",
+		},
+		{
+			firstName: "John",
+			lastName: "Doe",
+			dateOfBirth: "01/01/1990",
+			startDate: "01/01/2020",
+			street: "123 Main St",
+			city: "Anytown",
+			state: "NY",
+			zip: "12345",
+			department: "sales",
+			id: "3",
+		},
+	],
+};
 
 export const employeesSlice = createSlice({
 	name: "employees",
