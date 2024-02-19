@@ -21,4 +21,9 @@ const departments = [
 	},
 ];
 
-export default departments;
+function getDepartmentName(value: string) {
+	const department = departments.find(department => department.value === value);
+	return department ? department.name : "department not found";
+}
+
+export { departments, getDepartmentName };

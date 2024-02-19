@@ -1,8 +1,7 @@
 // ** Import core packages
 
-import { ChevronDown, ChevronUp } from "lucide-react";
-
 // ** Import icons
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 // ** Import assets
 
@@ -31,9 +30,12 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 // ** Import Types
 
 // ** Types
+interface OrderThProps {
+	title: string;
+	reorderAlphabetically: (order: "asc" | "desc") => void;
+}
 
-export default function OrderTh({ title, reorderAlphabetically }) {
-
+export default function OrderTh({ title, reorderAlphabetically }: OrderThProps) {
 	return (
 		<th className="relative border-[1px] border-gray-400 px-4 py-4 pr-8">
 			{title}

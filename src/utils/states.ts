@@ -237,4 +237,9 @@ const states = [
 	},
 ];
 
-export default states;
+function getStateName(value: string) {
+	const state = states.find(state => state.value === value);
+	return state ? state.name : "state not found";
+}
+
+export { states, getStateName };

@@ -1,4 +1,5 @@
 // ** Import core packages
+import { useRef } from "react";
 
 // ** Import icons
 
@@ -8,8 +9,8 @@
 
 // ** Import third party
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 
@@ -18,7 +19,6 @@ import TextInput from "../../shared-components/TextInput";
 import DateInput from "../../shared-components/DateInput";
 import SelectInput from "../../shared-components/SelectInput";
 import Button from "../../shared-components/Button";
-import { addEmployee } from "../../state/employeesSlice";
 
 // ** Import components
 
@@ -27,11 +27,11 @@ import { addEmployee } from "../../state/employeesSlice";
 // ** Import config
 
 // ** Import state manager
-import { useDispatch } from "react-redux";
 
 // ** Import utils / lib
-import states from "../../utils/states";
-import departments from "../../utils/departments";
+import { states } from "../../utils/states";
+import { departments } from "../../utils/departments";
+import Modal from "../../shared-components/Modal";
 
 // ** Import hooks
 
@@ -68,7 +68,7 @@ const schema = z.object({
 export type FormFieldsType = z.infer<typeof schema>;
 
 export default function Create() {
-	const dispatch = useDispatch();
+	const modalRef = useRef<HTMLDialogElement | null>(null);
 	const {
 		register,
 		handleSubmit,
@@ -86,10 +86,8 @@ export default function Create() {
 		},
 	});
 
-	async function onSubmit(data: FormFieldsType) {
+	function onSubmit(data: FormFieldsType) {
 		try {
-			await new Promise(resolve => setTimeout(resolve, 2000));
-
 			const employeeID = uuidv4();
 			const employeeDateOfBirth = data.dateOfBirth.toISOString().slice(0, 10);
 			const employeeStartDate = data.startDate.toISOString().slice(0, 10);
@@ -105,12 +103,25 @@ export default function Create() {
 				zip: data.zip,
 				department: data.department,
 			};
-			dispatch(addEmployee(newEmployee));
 
+			const employeeList = JSON.parse(localStorage.getItem("employee") || "[]");
+			employeeList.push(newEmployee);
+			localStorage.setItem("employee", JSON.stringify(employeeList));
+
+			modalRef.current?.showModal();
 			toast.success("Employee created successfully");
 		} catch (error) {
 			setError("root", { message: "An error occurred on our server" });
 		}
+	}
+
+	function logEmployeeList() {
+		const data = JSON.parse(localStorage.getItem("employee") || "[]");
+		console.log(data);
+	}
+
+	function resetEmployeeList() {
+		localStorage.setItem("employee", JSON.stringify([]));
 	}
 
 	return (
@@ -189,6 +200,22 @@ export default function Create() {
 				/>
 				{errors.root && <p className="text-red-500">{errors.root.message}</p>}
 			</form>
+			<button
+				className="rounded-md border-[1px] border-gray-400 p-2 transition-all hover:bg-gray-300 "
+				onClick={logEmployeeList}
+			>
+				Log employee list
+			</button>
+			<button
+				className="rounded-md border-[1px] border-gray-400 p-2 transition-all hover:bg-gray-300"
+				onClick={resetEmployeeList}
+			>
+				Reset employee list
+			</button>
+			<Modal ref={modalRef}>
+				<p>Employee created successfully</p>
+				<p>Modal content</p>
+			</Modal>
 		</main>
 	);
 }

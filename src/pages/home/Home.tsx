@@ -2,7 +2,6 @@
 import { useCallback, useEffect, useState } from "react";
 
 // ** Import icons
-import { ChevronDown, ChevronUp } from "lucide-react";
 
 // ** Import assets
 
@@ -10,7 +9,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 
 // ** Import third party
 import { toast } from "react-toastify";
-import { get, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 // ** Import shared components
 
@@ -21,13 +20,10 @@ import { get, useForm } from "react-hook-form";
 // ** Import config
 
 // ** Import state manager
-import { useDispatch, useSelector } from "react-redux";
-import { removeEmployee } from "../../state/employeesSlice";
-import { RootStateType } from "../../state/store";
 
 // ** Import utils / lib
-import states from "../../utils/states";
-import departments from "../../utils/departments";
+import { getStateName } from "../../utils/states";
+import { getDepartmentName } from "../../utils/departments";
 
 // ** Import hooks
 
@@ -37,14 +33,16 @@ import departments from "../../utils/departments";
 
 // ** Import Types
 import { EmployeesInterface } from "../../types/employeesType";
-import OrderTh from "../../shared-components/table/OrderTH";
+import OrderTh from "../../shared-components/table/OrderTh";
 
 // ** Types
 
 export default function Home() {
-	const { employees: employeesStore } = useSelector((state: RootStateType) => state.employees);
+	const employeeList: Array<EmployeesInterface> = JSON.parse(
+		localStorage.getItem("employee") || "[]"
+	);
 
-	const [totalEmployees, setTotalEmployees] = useState(employeesStore);
+	const [totalEmployees, setTotalEmployees] = useState(employeeList);
 	const [displayedEmployees, setDisplayedEmployees] = useState<Array<EmployeesInterface>>([]);
 	const [filter, setFilter] = useState(false);
 
@@ -52,13 +50,10 @@ export default function Home() {
 	const [page, setPage] = useState(0);
 	const [perPage, setPerPage] = useState(5);
 
-	const dispatch = useDispatch();
 	const { register, setValue } = useForm();
 
 	function filterEmployees(value: string) {
-		const employeesCopy = JSON.parse(
-			JSON.stringify(employeesStore)
-		) as Array<EmployeesInterface>;
+		const employeesCopy = JSON.parse(JSON.stringify(employeeList)) as Array<EmployeesInterface>;
 
 		if (value === "") {
 			setFilter(false);
@@ -104,44 +99,20 @@ export default function Home() {
 	);
 
 	useEffect(() => {
-		setTotalEmployees(employeesStore);
-	}, [employeesStore]);
-
-	useEffect(() => {
 		paginate(perPage, page);
 		setTotalPages(Math.ceil(totalEmployees.length / perPage));
 	}, [paginate, perPage, page, totalEmployees]);
 
 	function handleDeleteEmployee(id: string) {
-		dispatch(removeEmployee(id));
+		const filteredEmployeeList = employeeList.filter(employee => employee.id !== id);
+		localStorage.setItem("employee", JSON.stringify(filteredEmployeeList));
+		setTotalEmployees(filteredEmployeeList);
 		setValue("search", "");
 		setFilter(false);
 		toast.success("Employee deleted successfully", { autoClose: 2000 });
 	}
 
-	function getStateName(value: string) {
-		const state = states.find(state => state.value === value);
-		return state?.name;
-	}
-
-	function getDepartmentName(value: string) {
-		const department = departments.find(department => department.value === value);
-		return department?.name;
-	}
-
-	function reorderAlphabetically(
-		order: "asc" | "desc",
-		field:
-			| "firstName"
-			| "lastName"
-			| "department"
-			| "street"
-			| "city"
-			| "zip"
-			| "state"
-			| "startDate"
-			| "dateOfBirth"
-	) {
+	function reorderAlphabetically(order: "asc" | "desc", field: keyof EmployeesInterface) {
 		const employeesCopy = JSON.parse(
 			JSON.stringify(totalEmployees)
 		) as Array<EmployeesInterface>;
@@ -152,17 +123,13 @@ export default function Home() {
 				return 0;
 			});
 			setTotalEmployees(employeesCopy);
-			return;
-		}
-
-		if (order === "desc") {
+		} else if (order === "desc") {
 			employeesCopy.sort((a, b) => {
 				if (a[field] > b[field]) return -1;
 				if (a[field] < b[field]) return 1;
 				return 0;
 			});
 			setTotalEmployees(employeesCopy);
-			return;
 		}
 	}
 
@@ -176,10 +143,9 @@ export default function Home() {
 		{ title: "City", sortText: "city" },
 		{ title: "State", sortText: "state" },
 		{ title: "Zip", sortText: "zip" },
-	];
+	] as Array<{ title: string; sortText: keyof EmployeesInterface }>;
 
-	const getTdValue = (employee, sortText) => {
-		console.log(employee, sortText);
+	const getTdValue = (employee: EmployeesInterface, sortText: keyof EmployeesInterface) => {
 		if (sortText === "department") {
 			return getDepartmentName(employee[sortText]);
 		} else if (sortText === "state") {
@@ -225,7 +191,7 @@ export default function Home() {
 								<OrderTh
 									key={`th_${header.sortText}`}
 									title={header.title}
-									reorderAlphabetically={direction =>
+									reorderAlphabetically={(direction: "asc" | "desc") =>
 										reorderAlphabetically(direction, header.sortText)
 									}
 								/>

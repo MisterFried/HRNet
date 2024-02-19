@@ -33,8 +33,6 @@ import Loader from "./shared-components/Loader";
 
 // ** Import styles
 import "react-toastify/dist/ReactToastify.css";
-import { Provider } from "react-redux";
-import { store } from "./state/store";
 
 // ** Import Types
 
@@ -42,29 +40,27 @@ import { store } from "./state/store";
 
 export default function App() {
 	return (
-		<Provider store={store}>
-			<BrowserRouter>
-				<Header />
-				<Suspense fallback={<Loader />}>
-					<Routes>
-						<Route path="/" element={<Home />} />
-						<Route path="/create" element={<Create />} />
-					</Routes>
-				</Suspense>
-				<ToastContainer
-					position="bottom-center"
-					autoClose={5000}
-					hideProgressBar={false}
-					newestOnTop={false}
-					closeOnClick
-					rtl={false}
-					pauseOnFocusLoss
-					draggable
-					pauseOnHover
-					theme="light"
-					transition={Bounce}
-				/>
-			</BrowserRouter>
-		</Provider>
+		<BrowserRouter>
+			<Header />
+			<Suspense fallback={<Loader />}>
+				<Routes>
+					<Route path="/" element={<Home />} />
+					<Route path="/create" element={<Create />} />
+				</Routes>
+			</Suspense>
+			<ToastContainer
+				position="bottom-center"
+				autoClose={5000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+				theme="light"
+				transition={Bounce}
+			/>
+		</BrowserRouter>
 	);
 }
