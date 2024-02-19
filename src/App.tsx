@@ -11,7 +11,6 @@ const Home = lazy(() => import("./pages/home/Home"));
 const Create = lazy(() => import("./pages/create/Create"));
 
 // ** Import third party
-import { Bounce, ToastContainer } from "react-toastify";
 
 // ** Import shared components
 
@@ -48,19 +47,6 @@ export default function App() {
 					<Route path="/create" element={<Create />} />
 				</Routes>
 			</Suspense>
-			<ToastContainer
-				position="bottom-center"
-				autoClose={5000}
-				hideProgressBar={false}
-				newestOnTop={false}
-				closeOnClick
-				rtl={false}
-				pauseOnFocusLoss
-				draggable
-				pauseOnHover
-				theme="light"
-				transition={Bounce}
-			/>
 		</BrowserRouter>
 	);
 }

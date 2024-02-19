@@ -1,5 +1,5 @@
 // ** Import core packages
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 // ** Import icons
 
@@ -8,7 +8,6 @@ import { useCallback, useEffect, useState } from "react";
 // ** Import pages
 
 // ** Import third party
-import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 
 // ** Import shared components
@@ -34,6 +33,7 @@ import { getDepartmentName } from "../../utils/departments";
 // ** Import Types
 import { EmployeesInterface } from "../../types/employeesType";
 import OrderTh from "../../shared-components/table/OrderTh";
+import Modal from "../../shared-components/Modal";
 
 // ** Types
 
@@ -51,6 +51,8 @@ export default function Home() {
 	const [perPage, setPerPage] = useState(5);
 
 	const { register, setValue } = useForm();
+
+	const modalRef = useRef<HTMLDialogElement | null>(null);
 
 	function filterEmployees(value: string) {
 		const employeesCopy = JSON.parse(JSON.stringify(employeeList)) as Array<EmployeesInterface>;
@@ -109,7 +111,7 @@ export default function Home() {
 		setTotalEmployees(filteredEmployeeList);
 		setValue("search", "");
 		setFilter(false);
-		toast.success("Employee deleted successfully", { autoClose: 2000 });
+		modalRef.current?.showModal();
 	}
 
 	function reorderAlphabetically(order: "asc" | "desc", field: keyof EmployeesInterface) {
@@ -267,6 +269,9 @@ export default function Home() {
 					)}
 				</menu>
 			</div>
+			<Modal ref={modalRef}>
+				<p>Employee deleted successfully</p>
+			</Modal>
 		</main>
 	);
 }

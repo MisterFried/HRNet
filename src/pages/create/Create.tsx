@@ -11,7 +11,6 @@ import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 
 // ** Import shared components
@@ -109,7 +108,6 @@ export default function Create() {
 			localStorage.setItem("employee", JSON.stringify(employeeList));
 
 			modalRef.current?.showModal();
-			toast.success("Employee created successfully");
 		} catch (error) {
 			setError("root", { message: "An error occurred on our server" });
 		}
@@ -214,7 +212,6 @@ export default function Create() {
 			</button>
 			<Modal ref={modalRef}>
 				<p>Employee created successfully</p>
-				<p>Modal content</p>
 			</Modal>
 		</main>
 	);
