@@ -8,16 +8,17 @@ import { useRef } from "react";
 // ** Import pages
 
 // ** Import third party
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 
 // ** Import shared components
 import TextInput from "../../shared-components/TextInput";
-import DateInput from "../../shared-components/DateInput";
 import SelectInput from "../../shared-components/SelectInput";
 import Button from "../../shared-components/Button";
+import Modal from "../../shared-components/Modal";
+import DatePicker from "../../shared-components/DatePicker";
 
 // ** Import components
 
@@ -28,9 +29,8 @@ import Button from "../../shared-components/Button";
 // ** Import state manager
 
 // ** Import utils / lib
-import { states } from "../../utils/states";
-import { departments } from "../../utils/departments";
-import Modal from "../../shared-components/Modal";
+import states from "../../utils/states";
+import departments from "../../utils/departments";
 
 // ** Import hooks
 
@@ -42,6 +42,8 @@ import Modal from "../../shared-components/Modal";
 
 // ** Types
 
+const dateRegex = /^\d{4}\/(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])$/;
+
 const schema = z.object({
 	firstName: z
 		.string()
@@ -51,8 +53,8 @@ const schema = z.object({
 		.string()
 		.min(1, "Last name is required")
 		.min(3, "Last name must be at least 3 characters"),
-	dateOfBirth: z.coerce.date().max(new Date(), "Date of birth must be in the past"),
-	startDate: z.coerce.date().max(new Date(), "Start date must be in the past"),
+	dateOfBirth: z.string().min(1, "Date of Birth is required").regex(dateRegex, "Invalid date"),
+	startDate: z.string().min(1, "Start date is required").regex(dateRegex, "Invalid date"),
 	street: z.string().min(1, "Street is required").min(2, "Street must be at least 3 characters"),
 	city: z.string().min(1, "City is required").min(2, "City must be at least 3 characters"),
 	state: z.string().min(1, "State is required"),
@@ -68,12 +70,14 @@ export type FormFieldsType = z.infer<typeof schema>;
 
 export default function Create() {
 	const modalRef = useRef<HTMLDialogElement | null>(null);
+
 	const {
 		register,
 		handleSubmit,
 		setError,
 		formState: { errors, isSubmitting },
 		setValue,
+		control,
 	} = useForm<FormFieldsType>({
 		resolver: zodResolver(schema),
 		defaultValues: {
@@ -88,12 +92,10 @@ export default function Create() {
 	function onSubmit(data: FormFieldsType) {
 		try {
 			const employeeID = uuidv4();
-			const employeeDateOfBirth = data.dateOfBirth.toISOString().slice(0, 10);
-			const employeeStartDate = data.startDate.toISOString().slice(0, 10);
 			const newEmployee = {
 				id: employeeID,
-				dateOfBirth: employeeDateOfBirth,
-				startDate: employeeStartDate,
+				dateOfBirth: data.dateOfBirth,
+				startDate: data.startDate,
 				firstName: data.firstName,
 				lastName: data.lastName,
 				street: data.street,
@@ -144,13 +146,34 @@ export default function Create() {
 					register={register}
 					errors={errors}
 				/>
-				<DateInput
-					text="Date of Birth"
+				<Controller
+					control={control}
 					name="dateOfBirth"
-					register={register}
-					errors={errors}
+					defaultValue="yyyy / mm / dd"
+					render={({ field }) => (
+						<DatePicker
+							text="Date of Birth"
+							name={field.name}
+							value={field.value}
+							setValue={setValue}
+							errors={errors}
+						/>
+					)}
 				/>
-				<DateInput text="Start Date" name="startDate" register={register} errors={errors} />
+				<Controller
+					control={control}
+					name="startDate"
+					defaultValue="yyyy / mm / dd"
+					render={({ field }) => (
+						<DatePicker
+							text="Start date"
+							name={field.name}
+							value={field.value}
+							setValue={setValue}
+							errors={errors}
+						/>
+					)}
+				/>
 				<fieldset className="flex flex-col gap-2 rounded-md border-[1px] border-gray-200 p-4">
 					<legend className="px-2">Address</legend>
 					<TextInput

@@ -34,7 +34,7 @@ import { FormFieldsType } from "../pages/create/Create";
 interface propsInterface {
 	text: string;
 	name: keyof FormFieldsType;
-	options: Array<{ name: string; value: string }>;
+	options: Array<string>;
 	register: UseFormRegister<FormFieldsType>;
 	errors: FieldErrors<FormFieldsType>;
 	setValue: (name: keyof FormFieldsType, value: string) => void;
@@ -56,8 +56,8 @@ export default function SelectInput(props: propsInterface) {
 				className="rounded-md border-[1px] border-gray-300 bg-white p-2"
 			>
 				{options.map((option, index) => (
-					<option value={option.value} key={`${option.value}_${index}`}>
-						{option.name}
+					<option value={option} key={`${option}_${index}`}>
+						{option}
 					</option>
 				))}
 			</select>

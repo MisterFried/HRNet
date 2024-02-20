@@ -31,7 +31,6 @@ import Loader from "./shared-components/Loader";
 // ** Import APIs
 
 // ** Import styles
-import "react-toastify/dist/ReactToastify.css";
 
 // ** Import Types
 

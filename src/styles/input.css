@@ -61,6 +61,10 @@ dialog[open]::backdrop {
 	backdrop-filter: blur(4px);
 }
 
+.datePicker {
+	animation: slideDown 200ms ease-in-out;
+}
+
 @keyframes slideDown {
 	0% {
 		opacity: 0;
