@@ -21,21 +21,16 @@ import {
 // ** Import types
 import { FormFieldsType } from "../pages/create/Create";
 
-// TODO - Accessibility
-
-export default function DatePicker({
-	name,
-	value,
-	setValue,
-	errors,
-	text,
-}: {
+// ** Types
+interface DatePickerProps {
 	name: keyof FormFieldsType;
 	value: string;
 	setValue: UseFormSetValue<FormFieldsType>;
 	errors: FieldErrors<FormFieldsType>;
 	text: string;
-}) {
+}
+
+export default function DatePicker({ name, value, setValue, errors, text }: DatePickerProps) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [year, setyear] = useState(THIS_YEAR);
 	const [month, setMonth] = useState(THIS_MONTH);
@@ -43,6 +38,7 @@ export default function DatePicker({
 	const firstDayOfMonth = getMonthStart(year, month);
 	const daysInMonth = getMonthLength(year, month);
 
+	const todayDate = new Date().toDateString();
 	const days = [];
 
 	for (let i = 0; i < firstDayOfMonth; i++) {
@@ -50,15 +46,18 @@ export default function DatePicker({
 	}
 
 	for (let day = 1; day <= daysInMonth; day++) {
+		const dateValueString = `${year}/${zeroPad(month + 1)}/${zeroPad(day)}`;
+		const dateValue = new Date(dateValueString).toDateString();
+
 		days.push(
 			<button
 				type="button"
 				key={day}
 				onClick={() => {
-					setValue(name, `${year}/${zeroPad(month + 1)}/${zeroPad(day)}`);
+					setValue(name, dateValueString);
 					setIsOpen(false);
 				}}
-				className="cursor-pointer bg-gray-100 transition-all hover:bg-orange-200 focus:z-10 focus:bg-orange-200"
+				className={`cursor-pointer ${todayDate === dateValue ? "bg-orange-200" : "bg-gray-100"} transition-all hover:bg-orange-300 focus:z-10 focus:bg-orange-300`}
 			>
 				{zeroPad(day)}
 			</button>
@@ -66,7 +65,7 @@ export default function DatePicker({
 	}
 
 	return (
-		<div className="flex flex-col gap-1">
+		<div className="flex flex-col gap-1" aria-label="date picker">
 			<p className="text-sm font-medium">{text}</p>
 			<div className="relative rounded-md border-[1px] border-gray-300 p-2 transition-all">
 				<span>{value}</span>
@@ -74,6 +73,7 @@ export default function DatePicker({
 					type="button"
 					className="absolute right-2 top-1/2 -translate-y-1/2 transition-all hover:scale-110 focus:scale-110"
 					onClick={() => setIsOpen(!isOpen)}
+					aria-label="open date picker"
 				>
 					<CalendarDays />
 				</button>
