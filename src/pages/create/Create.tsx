@@ -42,8 +42,6 @@ import departments from "../../utils/departments";
 
 // ** Types
 
-const dateRegex = /^\d{4}\/(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])$/;
-
 const schema = z.object({
 	firstName: z
 		.string()
@@ -53,8 +51,8 @@ const schema = z.object({
 		.string()
 		.min(1, "Last name is required")
 		.min(3, "Last name must be at least 3 characters"),
-	dateOfBirth: z.string().min(1, "Date of Birth is required").regex(dateRegex, "Invalid date"),
-	startDate: z.string().min(1, "Start date is required").regex(dateRegex, "Invalid date"),
+	dateOfBirth: z.coerce.date().max(new Date(), "Date of birth must be in the past"),
+	startDate: z.coerce.date().max(new Date(), "Start date must be in the past"),
 	street: z.string().min(1, "Street is required").min(2, "Street must be at least 3 characters"),
 	city: z.string().min(1, "City is required").min(2, "City must be at least 3 characters"),
 	state: z.string().min(1, "State is required"),
@@ -149,7 +147,7 @@ export default function Create() {
 				<Controller
 					control={control}
 					name="dateOfBirth"
-					defaultValue="yyyy / mm / dd"
+					defaultValue={new Date("2000/01/01")}
 					render={({ field }) => (
 						<DatePicker
 							text="Date of Birth"
@@ -163,7 +161,7 @@ export default function Create() {
 				<Controller
 					control={control}
 					name="startDate"
-					defaultValue="yyyy / mm / dd"
+					defaultValue={new Date("2000/01/01")}
 					render={({ field }) => (
 						<DatePicker
 							text="Start date"

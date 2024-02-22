@@ -24,7 +24,7 @@ import { FormFieldsType } from "../pages/create/Create";
 // ** Types
 interface DatePickerProps {
 	name: keyof FormFieldsType;
-	value: string;
+	value: Date;
 	setValue: UseFormSetValue<FormFieldsType>;
 	errors: FieldErrors<FormFieldsType>;
 	text: string;
@@ -54,7 +54,7 @@ export default function DatePicker({ name, value, setValue, errors, text }: Date
 				type="button"
 				key={day}
 				onClick={() => {
-					setValue(name, dateValueString);
+					setValue(name, new Date(dateValueString));
 					setIsOpen(false);
 				}}
 				className={`cursor-pointer ${todayDate === dateValue ? "bg-orange-200" : "bg-gray-100"} transition-all hover:bg-orange-300 focus:z-10 focus:bg-orange-300`}
@@ -68,7 +68,7 @@ export default function DatePicker({ name, value, setValue, errors, text }: Date
 		<div className="flex flex-col gap-1" aria-label="date picker">
 			<p className="text-sm font-medium">{text}</p>
 			<div className="relative rounded-md border-[1px] border-gray-300 p-2 transition-all">
-				<span>{value}</span>
+				<span>{value.toDateString()}</span>
 				<button
 					type="button"
 					className="absolute right-2 top-1/2 -translate-y-1/2 transition-all hover:scale-110 focus:scale-110"
@@ -89,7 +89,7 @@ export default function DatePicker({ name, value, setValue, errors, text }: Date
 											setMonth(11);
 										} else setMonth(month - 1);
 									}}
-									className="absolute left-2 top-1/2 -translate-y-1/2 cursor-pointer"
+									className="absolute left-2 top-1/2 -translate-y-1/2 cursor-pointer rounded-sm transition-all hover:bg-gray-200 hover:ring-1 hover:ring-gray-500 focus:bg-gray-200 focus:ring-1 focus:ring-gray-500"
 								>
 									<ArrowLeftIcon size={18} />
 								</button>
@@ -102,7 +102,7 @@ export default function DatePicker({ name, value, setValue, errors, text }: Date
 											setMonth(0);
 										} else setMonth(month + 1);
 									}}
-									className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
+									className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer rounded-sm transition-all hover:bg-gray-200 hover:ring-1 hover:ring-gray-500 focus:bg-gray-200 focus:ring-1 focus:ring-gray-500"
 								>
 									<ArrowRightIcon size={18} />
 								</button>
@@ -112,7 +112,7 @@ export default function DatePicker({ name, value, setValue, errors, text }: Date
 								<button
 									type="button"
 									onClick={() => setyear(year - 1)}
-									className="absolute left-2 top-1/2 -translate-y-1/2 cursor-pointer"
+									className="absolute left-2 top-1/2 -translate-y-1/2 cursor-pointer rounded-sm transition-all hover:bg-gray-200 hover:ring-1 hover:ring-gray-500 focus:bg-gray-200 focus:ring-1 focus:ring-gray-500"
 								>
 									<ArrowLeftIcon size={18} />
 								</button>
@@ -120,7 +120,7 @@ export default function DatePicker({ name, value, setValue, errors, text }: Date
 								<button
 									type="button"
 									onClick={() => setyear(year + 1)}
-									className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
+									className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer rounded-sm transition-all hover:bg-gray-200 hover:ring-1 hover:ring-gray-500 focus:bg-gray-200 focus:ring-1 focus:ring-gray-500"
 								>
 									<ArrowRightIcon size={18} />
 								</button>
