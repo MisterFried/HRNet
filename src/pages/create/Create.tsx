@@ -92,8 +92,21 @@ export default function Create() {
 			const employeeID = uuidv4();
 			const newEmployee = {
 				id: employeeID,
-				dateOfBirth: data.dateOfBirth,
-				startDate: data.startDate,
+				// +1 to the day to avoid timezone issues (EU based server, US based date picker)
+				dateOfBirth: new Date(
+					data.dateOfBirth.getFullYear(),
+					data.dateOfBirth.getMonth(),
+					data.dateOfBirth.getDate() + 1
+				)
+					.toISOString()
+					.slice(0, 10),
+				startDate: new Date(
+					data.startDate.getFullYear(),
+					data.startDate.getMonth(),
+					data.startDate.getDate() + 1
+				)
+					.toISOString()
+					.slice(0, 10),
 				firstName: data.firstName,
 				lastName: data.lastName,
 				street: data.street,
