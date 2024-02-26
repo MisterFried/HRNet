@@ -28,7 +28,7 @@ import { FieldErrors, UseFormRegister } from "react-hook-form";
 // ** Import styles
 
 // ** Import Types
-import { FormFieldsType } from "../pages/create/Create";
+import { FormFieldsType } from "../shared-components/form/Form";
 
 // ** Types
 interface propsInterface {

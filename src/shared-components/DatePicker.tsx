@@ -19,7 +19,7 @@ import {
 } from "../utils/calendarHelpers";
 
 // ** Import types
-import { FormFieldsType } from "../pages/create/Create";
+import { FormFieldsType } from "../shared-components/form/Form";
 
 // ** Types
 interface DatePickerProps {
