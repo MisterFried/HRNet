@@ -97,11 +97,11 @@ export default function Table({ list, deleteItem, headers }: TablePropsInterface
 	function handleSort(order: "asc" | "desc", field: keyof EmployeesInterface) {
 		const sortedEmployees = sortEmployees([...filteredEmployees], field, order);
 
-		setFilteredEmployees(sortedEmployees);
 		setParameters({ ...parameters, sort: [field, order] });
+		setFilteredEmployees(sortedEmployees);
 	}
 
-	// Update the filtered employees when the list (data provided) or the filter/sort parameters changes
+	// Update the total and filtered employees list when the list (data provided) changes
 	useEffect(() => {
 		const employeesFiltered = filterEmployees(list, parameters.filter);
 		const employeesSorted = sortEmployees(
@@ -114,17 +114,13 @@ export default function Table({ list, deleteItem, headers }: TablePropsInterface
 		setFilteredEmployees(employeesSorted);
 	}, [list, parameters]);
 
-	// Paginate the employees when page or perPage changes, or when the employees are filtered
+	// Update the pagination when page or perPage changes, or when the employees are filtered
 	useEffect(() => {
 		paginate(paginationParams.perPage, paginationParams.page);
 	}, [paginate, paginationParams, filteredEmployees]);
 
 	// Prevent being on a page that doesn't exist when the number of records per page changes
 	useEffect(() => {
-		if (paginationParams.page === 0) {
-			return;
-		}
-
 		if (paginationParams.page >= totalPage) {
 			setPaginationParams({ ...paginationParams, page: totalPage - 1 });
 		}

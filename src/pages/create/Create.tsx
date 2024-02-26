@@ -31,6 +31,7 @@ import DatePicker from "../../shared-components/DatePicker";
 // ** Import utils / lib
 import states from "../../utils/states";
 import departments from "../../utils/departments";
+import { zeroPad } from "../../utils/calendarHelpers";
 
 // ** Import hooks
 
@@ -92,21 +93,8 @@ export default function Create() {
 			const employeeID = uuidv4();
 			const newEmployee = {
 				id: employeeID,
-				// +1 to the day to avoid timezone issues (EU based server, US based date picker)
-				dateOfBirth: new Date(
-					data.dateOfBirth.getFullYear(),
-					data.dateOfBirth.getMonth(),
-					data.dateOfBirth.getDate() + 1
-				)
-					.toISOString()
-					.slice(0, 10),
-				startDate: new Date(
-					data.startDate.getFullYear(),
-					data.startDate.getMonth(),
-					data.startDate.getDate() + 1
-				)
-					.toISOString()
-					.slice(0, 10),
+				dateOfBirth: `${data.dateOfBirth.getFullYear()} / ${zeroPad(data.dateOfBirth.getMonth() + 1)} / ${zeroPad(data.dateOfBirth.getDate())}`,
+				startDate: `${data.startDate.getFullYear()} / ${zeroPad(data.startDate.getMonth() + 1)} / ${zeroPad(data.startDate.getDate())}`,
 				firstName: data.firstName,
 				lastName: data.lastName,
 				street: data.street,

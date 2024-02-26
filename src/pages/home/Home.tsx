@@ -10,8 +10,10 @@ import { useRef, useState } from "react";
 // ** Import third party
 
 // ** Import shared components
+import Modal from "../../shared-components/Modal";
 
 // ** Import components
+import Table from "../../shared-components/table/Table";
 
 // ** Import sub pages / sections
 
@@ -29,12 +31,6 @@ import { useRef, useState } from "react";
 
 // ** Import Types
 import { EmployeesInterface } from "../../types/employeesType";
-import Modal from "../../shared-components/Modal";
-import Table from "../../shared-components/table/Table";
-
-// ** Types
-
-// sauvegarder state en entier
 
 export default function Home() {
 	const storedEmployeeList: Array<EmployeesInterface> = JSON.parse(
@@ -48,9 +44,9 @@ export default function Home() {
 		const newEmployeeList = employeeList.filter(employee => employee.id !== id);
 
 		localStorage.setItem("employee", JSON.stringify(newEmployeeList));
-		modalRef.current?.showModal();
-
 		setEmployeeList(newEmployeeList);
+
+		modalRef.current?.showModal();
 	}
 
 	const headers = [

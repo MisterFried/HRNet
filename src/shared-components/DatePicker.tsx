@@ -38,16 +38,17 @@ export default function DatePicker({ name, value, setValue, errors, text }: Date
 	const firstDayOfMonth = getMonthStart(year, month);
 	const daysInMonth = getMonthLength(year, month);
 
-	const todayDate = new Date().toISOString().slice(0, 10);
+	const today = new Date();
 	const days = [];
 
+	// Add empty days until the start of the month
 	for (let i = 0; i < firstDayOfMonth; i++) {
 		days.push(<div key={`empty-${i}`} className="bg-gray-300"></div>);
 	}
 
+	// Add days to the month
 	for (let day = 1; day <= daysInMonth; day++) {
-		const dateValueString = `${year}-${zeroPad(month + 1)}-${zeroPad(day)}`;
-		const dateValue = new Date(dateValueString);
+		const dateValue = new Date(`${year}-${zeroPad(month + 1)}-${zeroPad(day)}`);
 
 		days.push(
 			<button
@@ -57,7 +58,7 @@ export default function DatePicker({ name, value, setValue, errors, text }: Date
 					setValue(name, dateValue);
 					setIsOpen(false);
 				}}
-				className={`cursor-pointer ${todayDate === dateValueString ? "bg-orange-200" : "bg-gray-100"} transition-all hover:bg-orange-300 focus:z-10 focus:bg-orange-300`}
+				className={`cursor-pointer ${today.toDateString() === dateValue.toDateString() ? "bg-orange-200" : "bg-gray-100"} transition-all hover:bg-orange-300 focus:z-10 focus:bg-orange-300`}
 			>
 				{zeroPad(day)}
 			</button>
@@ -80,6 +81,7 @@ export default function DatePicker({ name, value, setValue, errors, text }: Date
 				{isOpen && (
 					<div className="datePicker absolute left-0 top-[calc(100%_+_0.5rem)] z-10 grid w-full cursor-auto grid-cols-1 gap-2 rounded-md border-[1px] border-gray-400 bg-white p-2 text-center shadow-md">
 						<div className="grid grid-cols-2 gap-1">
+							{/* Next / previous month */}
 							<p className="relative rounded-sm border-[1px] border-gray-200">
 								<button
 									type="button"
@@ -108,6 +110,7 @@ export default function DatePicker({ name, value, setValue, errors, text }: Date
 								</button>
 							</p>
 
+							{/* Next / previous year */}
 							<p className="relative select-none rounded-sm border-[1px] border-gray-200">
 								<button
 									type="button"
@@ -127,6 +130,7 @@ export default function DatePicker({ name, value, setValue, errors, text }: Date
 							</p>
 						</div>
 
+						{/* Days of the month */}
 						<div className="grid grid-cols-7 gap-[1px] border-[1px] border-gray-300 bg-gray-300">
 							{DAYS.map(day => (
 								<div key={day} className="bg-white">

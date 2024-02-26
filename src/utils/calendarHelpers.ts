@@ -33,10 +33,23 @@ function zeroPad(num: number) {
 	return num.toString().padStart(2, "0");
 }
 
+/**
+ * Returns the number of days in a given month of a specific year.
+ * @param year - The year.
+ * @param month - The month (0-based index).
+ * @returns The number of days in the specified month.
+ */
 function getMonthLength(year: number, month: number) {
+	// Get the day before the first day of the next month, aka the last day of the current month.
 	return new Date(year, month + 1, 0).getDate();
 }
 
+/**
+ * Returns the day of the week (0-6) for the start of the specified month.
+ * @param year - The year of the month.
+ * @param month - The month (0-11).
+ * @returns The day of the week (0-6) for the start of the specified month.
+ */
 function getMonthStart(year: number, month: number) {
 	const day = new Date(year, month, 1).getDay();
 	return day;
