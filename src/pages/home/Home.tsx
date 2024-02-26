@@ -13,7 +13,7 @@ import { useRef, useState } from "react";
 import Modal from "../../shared-components/Modal";
 
 // ** Import components
-import Table from "../../shared-components/table/Table";
+import Table from "../../shared-components/table/PaginatedTable";
 
 // ** Import sub pages / sections
 
@@ -66,7 +66,7 @@ export default function Home() {
 			<h2 className="mb-8 text-center text-xl font-bold">Current Employees</h2>
 			<p>List of all the currently registered employees</p>
 
-			<Table list={employeeList} deleteItem={handleDeleteEmployee} headers={headers} />
+			<Table list={employeeList} deleteItem={handleDeleteEmployee} headers={headers} paginateOptions={[5, 10, 20, 50]} />
 
 			<Modal ref={modalRef}>
 				<p>Employee deleted successfully</p>

@@ -39,6 +39,7 @@ interface TablePropsInterface {
 	list: Array<EmployeesInterface>;
 	deleteItem: (id: string) => void;
 	headers: Array<{ title: string; sortText: keyof EmployeesInterface }>;
+	paginateOptions: Array<number>;
 }
 
 interface parametersInterface {
@@ -46,7 +47,12 @@ interface parametersInterface {
 	sort: [keyof EmployeesInterface, "asc" | "desc"];
 }
 
-export default function Table({ list, deleteItem, headers }: TablePropsInterface) {
+export default function PaginatedTable({
+	list,
+	deleteItem,
+	headers,
+	paginateOptions = [5, 10, 15],
+}: TablePropsInterface) {
 	const [totalEmployees, setTotalEmployees] = useState(list); // All stored employees
 	const [filteredEmployees, setFilteredEmployees] =
 		useState<Array<EmployeesInterface>>(totalEmployees); // Employees after filtering
@@ -56,8 +62,13 @@ export default function Table({ list, deleteItem, headers }: TablePropsInterface
 		filter: "",
 		sort: ["firstName", "asc"],
 	});
+
+	paginateOptions.sort((a, b) => a - b);
+	const index = paginateOptions.findIndex(option => option >= filteredEmployees.length);
+	const adjustedPaginatedOptions = paginateOptions.slice(0, index + 1);
+
 	const [paginationParams, setPaginationParams] = useState({
-		perPage: 5,
+		perPage: adjustedPaginatedOptions[0],
 		page: 0,
 	});
 
@@ -130,25 +141,31 @@ export default function Table({ list, deleteItem, headers }: TablePropsInterface
 		<>
 			{/* Pagination and filter */}
 			<section className="flex justify-between gap-4">
-				<label className="flex items-center gap-2" htmlFor="paginate">
-					Show{" "}
-					<select
-						name="paginate"
-						id="paginate"
-						onChange={e =>
-							setPaginationParams({
-								...paginationParams,
-								perPage: Number(e.target.value),
-							})
-						}
-						className="rounded-md p-2"
-					>
-						<option value="5">5</option>
-						<option value="10">10</option>
-						<option value="15">15</option>
-					</select>{" "}
-					records
-				</label>
+				<div>
+					{adjustedPaginatedOptions.length > 1 && filteredEmployees.length > 0 && (
+						<label className="flex items-center gap-2" htmlFor="paginate">
+							Show{" "}
+							<select
+								name="paginate"
+								id="paginate"
+								onChange={e =>
+									setPaginationParams({
+										...paginationParams,
+										perPage: Number(e.target.value),
+									})
+								}
+								className="rounded-md p-2"
+							>
+								{adjustedPaginatedOptions.map(option => (
+									<option key={option} value={option}>
+										{option}
+									</option>
+								))}
+							</select>{" "}
+							records
+						</label>
+					)}
+				</div>
 				<input
 					type="text"
 					placeholder="Search"
@@ -168,7 +185,7 @@ export default function Table({ list, deleteItem, headers }: TablePropsInterface
 									title={header.title}
 									sortText={header.sortText}
 									reorderAlphabetically={handleSort}
-									isActive={`${parameters.sort[0]}_${parameters.sort[1]}`}
+									activeSort={`${parameters.sort[0]}_${parameters.sort[1]}`}
 								/>
 							);
 						})}
