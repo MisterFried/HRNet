@@ -138,7 +138,7 @@ export default function PaginatedTable({
 										perPage: Number(e.target.value),
 									})
 								}
-								className="rounded-md p-2"
+								className="border-gray- 300 rounded-md border p-2"
 							>
 								{adjustedPaginatedOptions.map(option => (
 									<option key={option} value={option}>

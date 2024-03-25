@@ -6,9 +6,7 @@ interface ButtonProps {
 	type?: "button" | "submit" | "reset";
 }
 
-export default function Button(props: ButtonProps) {
-	const { label, onClick, disabled = false, type = "button" } = props;
-
+export default function Button({ label, onClick, disabled = false, type = "button" }: ButtonProps) {
 	return (
 		<button
 			type={type}

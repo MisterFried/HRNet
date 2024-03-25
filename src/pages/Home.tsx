@@ -41,14 +41,12 @@ export default function Home() {
 		<main className="mx-auto flex w-fit flex-col gap-4 p-4">
 			<h2 className="mb-8 text-center text-xl font-bold">Current Employees</h2>
 			<p>List of all the currently registered employees</p>
-
 			<Table
 				data={employeeList}
 				action={handleDeleteEmployee}
 				headers={headers}
 				paginateOptions={[5, 10, 20, 50]}
 			/>
-
 			<Modal ref={modalRef}>
 				<p>Employee deleted successfully</p>
 			</Modal>
