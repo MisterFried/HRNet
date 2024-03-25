@@ -1,51 +1,23 @@
-// ** Import core packages
-
-// ** Import icons
-
-// ** Import assets
-
-// ** Import pages
-
 // ** Import third party
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 
-// ** Import shared components
-
-// ** Import components
-
-// ** Import sub pages / sections
-
-// ** Import config
-
-// ** Import state manager
-
-// ** Import utils / lib
-
-// ** Import hooks
-
-// ** Import APIs
-
-// ** Import styles
-
 // ** Import Types
-import { FormFieldsType } from "../shared-components/form/Form";
+import { FormFieldsType } from "./Form";
 
 // ** Types
 interface propsInterface {
-	text: string;
+	label: string;
 	placeholder: string;
 	name: keyof FormFieldsType;
 	register: UseFormRegister<FormFieldsType>;
 	errors: FieldErrors<FormFieldsType>;
 }
 
-export default function TextInput(props: propsInterface) {
-	const { text, placeholder, name, register, errors } = props;
-
+export default function TextInput({ label, placeholder, name, register, errors }: propsInterface) {
 	return (
 		<div className="flex flex-col gap-1">
 			<label htmlFor={name} className="text-sm font-medium">
-				{text}
+				{label}
 			</label>
 			<input
 				type="text"

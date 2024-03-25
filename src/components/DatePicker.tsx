@@ -1,5 +1,5 @@
 // ** Import core packages
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 // ** Import icons
 import { ArrowLeftIcon, ArrowRightIcon, CalendarDays } from "lucide-react";
@@ -19,20 +19,20 @@ import {
 } from "../utils/calendarHelpers";
 
 // ** Import types
-import { FormFieldsType } from "../shared-components/form/Form";
+import { FormFieldsType } from "./Form";
 
 // ** Types
 interface DatePickerProps {
+	label: string;
 	name: keyof FormFieldsType;
 	value: Date;
 	setValue: UseFormSetValue<FormFieldsType>;
 	errors: FieldErrors<FormFieldsType>;
-	text: string;
 }
 
-export default function DatePicker({ name, value, setValue, errors, text }: DatePickerProps) {
+export default function DatePicker({ label, name, value, setValue, errors }: DatePickerProps) {
 	const [isOpen, setIsOpen] = useState(false);
-	const [year, setyear] = useState(THIS_YEAR);
+	const [year, setYear] = useState(THIS_YEAR);
 	const [month, setMonth] = useState(THIS_MONTH);
 
 	const firstDayOfMonth = getMonthStart(year, month);
@@ -41,12 +41,18 @@ export default function DatePicker({ name, value, setValue, errors, text }: Date
 	const today = new Date();
 	const days = [];
 
-	// Add empty days until the start of the month
+	// Close the calendar when clicking outside
+	const calendarRef = useRef<HTMLDivElement>(null);
+	document.addEventListener("click", e => {
+		if (!calendarRef.current?.contains(e.target as HTMLElement)) setIsOpen(false);
+	});
+
+	// Add empty days slot until the start of the month
 	for (let i = 0; i < firstDayOfMonth; i++) {
 		days.push(<div key={`empty-${i}`} className="bg-gray-300"></div>);
 	}
 
-	// Add days to the month
+	// Add days slot to the month
 	for (let day = 1; day <= daysInMonth; day++) {
 		const dateValue = new Date(`${year}-${zeroPad(month + 1)}-${zeroPad(day)}`);
 
@@ -66,8 +72,8 @@ export default function DatePicker({ name, value, setValue, errors, text }: Date
 	}
 
 	return (
-		<div className="flex flex-col gap-1" aria-label="date picker">
-			<p className="text-sm font-medium">{text}</p>
+		<div className="flex flex-col gap-1" aria-label="date picker" ref={calendarRef}>
+			<p className="text-sm font-medium">{label}</p>
 			<div className="relative rounded-md border-[1px] border-gray-300 p-2 transition-all">
 				<span>{value.toDateString()}</span>
 				<button
@@ -87,7 +93,7 @@ export default function DatePicker({ name, value, setValue, errors, text }: Date
 									type="button"
 									onClick={() => {
 										if (month === 0) {
-											setyear(year - 1);
+											setYear(year - 1);
 											setMonth(11);
 										} else setMonth(month - 1);
 									}}
@@ -100,7 +106,7 @@ export default function DatePicker({ name, value, setValue, errors, text }: Date
 									type="button"
 									onClick={() => {
 										if (month === 11) {
-											setyear(year + 1);
+											setYear(year + 1);
 											setMonth(0);
 										} else setMonth(month + 1);
 									}}
@@ -114,7 +120,7 @@ export default function DatePicker({ name, value, setValue, errors, text }: Date
 							<p className="relative select-none rounded-sm border-[1px] border-gray-200">
 								<button
 									type="button"
-									onClick={() => setyear(year - 1)}
+									onClick={() => setYear(year - 1)}
 									className="absolute left-2 top-1/2 -translate-y-1/2 cursor-pointer rounded-sm transition-all hover:bg-gray-200 hover:ring-1 hover:ring-gray-500 focus:bg-gray-200 focus:ring-1 focus:ring-gray-500"
 								>
 									<ArrowLeftIcon size={18} />
@@ -122,7 +128,7 @@ export default function DatePicker({ name, value, setValue, errors, text }: Date
 								{year}
 								<button
 									type="button"
-									onClick={() => setyear(year + 1)}
+									onClick={() => setYear(year + 1)}
 									className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer rounded-sm transition-all hover:bg-gray-200 hover:ring-1 hover:ring-gray-500 focus:bg-gray-200 focus:ring-1 focus:ring-gray-500"
 								>
 									<ArrowRightIcon size={18} />

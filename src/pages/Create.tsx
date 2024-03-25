@@ -1,35 +1,8 @@
-// ** Import core packages
-
-// ** Import icons
-
-// ** Import assets
-
-// ** Import pages
-
-// ** Import third party
-
-// ** Import shared components
-
-// ** Import components
-
 // ** Import sub pages / sections
-import Form from "../../shared-components/form/Form";
-
-// ** Import config
-
-// ** Import state manager
+import Form from "../components/Form";
 
 // ** Import utils / lib
-
-// ** Import hooks
-
-// ** Import APIs
-
-// ** Import styles
-
-// ** Import Types
-
-// ** Types
+import dummyEmployees from "../data/employees";
 
 export default function Create() {
 	function logEmployeeList() {
@@ -39,6 +12,10 @@ export default function Create() {
 
 	function resetEmployeeList() {
 		localStorage.setItem("employee", JSON.stringify([]));
+	}
+
+	function setDummyEmployeeList() {
+		localStorage.setItem("employee", JSON.stringify(dummyEmployees));
 	}
 
 	return (
@@ -57,6 +34,12 @@ export default function Create() {
 				onClick={resetEmployeeList}
 			>
 				Reset employee list
+			</button>
+			<button
+				className="rounded-md border-[1px] border-gray-400 p-2 transition-all hover:bg-gray-300 "
+				onClick={setDummyEmployeeList}
+			>
+				Set dummy employee list
 			</button>
 		</main>
 	);

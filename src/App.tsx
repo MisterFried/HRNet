@@ -2,39 +2,13 @@
 import { Suspense, lazy } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-// ** Import icons
-
-// ** Import assets
-
 // ** Import pages
-const Home = lazy(() => import("./pages/home/Home"));
-const Create = lazy(() => import("./pages/create/Create"));
-
-// ** Import third party
-
-// ** Import shared components
+const Home = lazy(() => import("./pages/Home"));
+const Create = lazy(() => import("./pages/Create"));
 
 // ** Import components
-import Header from "./shared-components/Header";
-import Loader from "./shared-components/Loader";
-
-// ** Import sub pages / sections
-
-// ** Import config
-
-// ** Import state manager
-
-// ** Import utils / lib
-
-// ** Import hooks
-
-// ** Import APIs
-
-// ** Import styles
-
-// ** Import Types
-
-// ** Types
+import Header from "./components/Header";
+import Loader from "./components/Loader";
 
 export default function App() {
 	return (

@@ -1,43 +1,13 @@
-// ** Import core packages
-
-// ** Import icons
-
-// ** Import assets
-
-// ** Import pages
-
-// ** Import third party
-
-// ** Import shared components
-
-// ** Import components
-
-// ** Import sub pages / sections
-
-// ** Import config
-
-// ** Import state manager
-
-// ** Import utils / lib
-
-// ** Import hooks
-
-// ** Import APIs
-
-// ** Import styles
-
-// ** Import Types
-
 // ** Types
 interface ButtonProps {
-	text: string;
+	label: string;
 	onClick?: () => void;
 	disabled?: boolean;
 	type?: "button" | "submit" | "reset";
 }
 
 export default function Button(props: ButtonProps) {
-	const { text, onClick, disabled = false, type = "button" } = props;
+	const { label, onClick, disabled = false, type = "button" } = props;
 
 	return (
 		<button
@@ -51,7 +21,7 @@ export default function Button(props: ButtonProps) {
 			hover:text-main-50 before:hover:right-0 before:hover:w-full before:hover:scale-150 before:hover:duration-500 
 			focus:text-main-50 before:focus:right-0 before:focus:w-full before:focus:scale-150 before:focus:duration-500`}
 		>
-			{text}
+			{label}
 		</button>
 	);
 }

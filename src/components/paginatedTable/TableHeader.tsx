@@ -1,31 +1,5 @@
-// ** Import core packages
-
 // ** Import icons
 import { ChevronDown, ChevronUp } from "lucide-react";
-
-// ** Import assets
-
-// ** Import pages
-
-// ** Import third party
-
-// ** Import shared components
-
-// ** Import components
-
-// ** Import sub pages / sections
-
-// ** Import config
-
-// ** Import state manager
-
-// ** Import utils / lib
-
-// ** Import hooks
-
-// ** Import APIs
-
-// ** Import styles
 
 // ** Import Types
 import { EmployeesInterface } from "../../types/employeesType";

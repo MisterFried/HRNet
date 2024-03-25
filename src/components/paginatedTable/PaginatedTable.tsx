@@ -1,43 +1,21 @@
 // ** Import core packages
 import { useCallback, useEffect, useState } from "react";
 
-// ** Import icons
-
-// ** Import assets
-
-// ** Import pages
-
-// ** Import third party
-
-// ** Import shared components
-
 // ** Import components
 import TableHeader from "./TableHeader";
 import TableRow from "./TableRow";
 
-// ** Import sub pages / sections
-
-// ** Import config
-
-// ** Import state manager
-
 // ** Import utils / lib
 import filterEmployees from "../../utils/filterEmployees";
 import sortEmployees from "../../utils/sortEmployees";
-
-// ** Import hooks
-
-// ** Import APIs
-
-// ** Import styles
 
 // ** Import Types
 import { EmployeesInterface } from "../../types/employeesType";
 
 // ** Types
 interface TablePropsInterface {
-	list: Array<EmployeesInterface>;
-	deleteItem: (id: string) => void;
+	data: Array<EmployeesInterface>;
+	action: (id: string) => void;
 	headers: Array<{ title: string; sortText: keyof EmployeesInterface }>;
 	paginateOptions: Array<number>;
 }
@@ -48,25 +26,28 @@ interface parametersInterface {
 }
 
 export default function PaginatedTable({
-	list,
-	deleteItem,
+	data,
+	action,
 	headers,
 	paginateOptions = [5, 10, 15],
 }: TablePropsInterface) {
-	const [totalEmployees, setTotalEmployees] = useState(list); // All stored employees
+	const [totalEmployees, setTotalEmployees] = useState(data); // All stored employees
 	const [filteredEmployees, setFilteredEmployees] =
 		useState<Array<EmployeesInterface>>(totalEmployees); // Employees after filtering
 	const [paginatedEmployees, setPaginatedEmployees] = useState<Array<EmployeesInterface>>([]); // Filtered employees after pagination
 
+	// Filter / sort parameters
 	const [parameters, setParameters] = useState<parametersInterface>({
 		filter: "",
 		sort: ["firstName", "asc"],
 	});
 
+	// Remove unnecessary pagination options (greater than the number of items)
 	paginateOptions.sort((a, b) => a - b);
 	const index = paginateOptions.findIndex(option => option >= filteredEmployees.length);
 	const adjustedPaginatedOptions = paginateOptions.slice(0, index + 1);
 
+	// Pagination params (items per page and current page)
 	const [paginationParams, setPaginationParams] = useState({
 		perPage: adjustedPaginatedOptions[0],
 		page: 0,
@@ -75,6 +56,7 @@ export default function PaginatedTable({
 	let totalPage = Math.ceil(filteredEmployees.length / paginationParams.perPage);
 	if (filteredEmployees.length === 0) totalPage = 1;
 
+	// Calculate the interval of currently displayed items
 	const paginationMin = paginationParams.page * paginationParams.perPage + 1;
 	const paginationMax = Math.min(
 		filteredEmployees.length,
@@ -99,12 +81,14 @@ export default function PaginatedTable({
 		[filteredEmployees]
 	);
 
+	// Filter the items and update the filter parameters
 	function handleFilter(value: string) {
 		const result = filterEmployees(totalEmployees, value);
 		setParameters({ ...parameters, filter: value });
 		setFilteredEmployees(result);
 	}
 
+	// Sort the items and update the sort parameters
 	function handleSort(order: "asc" | "desc", field: keyof EmployeesInterface) {
 		const sortedEmployees = sortEmployees([...filteredEmployees], field, order);
 
@@ -112,18 +96,18 @@ export default function PaginatedTable({
 		setFilteredEmployees(sortedEmployees);
 	}
 
-	// Update the total and filtered employees list when the list (data provided) changes
+	// Update the total and filtered employees list when the data changes
 	useEffect(() => {
-		const employeesFiltered = filterEmployees(list, parameters.filter);
+		const employeesFiltered = filterEmployees(data, parameters.filter);
 		const employeesSorted = sortEmployees(
 			employeesFiltered,
 			parameters.sort[0],
 			parameters.sort[1]
 		);
 
-		setTotalEmployees(list);
+		setTotalEmployees(data);
 		setFilteredEmployees(employeesSorted);
-	}, [list, parameters]);
+	}, [data, parameters]);
 
 	// Update the pagination when page or perPage changes, or when the employees are filtered
 	useEffect(() => {
@@ -209,7 +193,7 @@ export default function PaginatedTable({
 								key={employee.id}
 								employee={employee}
 								headers={headers}
-								deleteItem={deleteItem}
+								deleteItem={action}
 							/>
 						))
 					)}

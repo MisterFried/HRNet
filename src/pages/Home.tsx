@@ -1,36 +1,12 @@
 // ** Import core packages
 import { useRef, useState } from "react";
 
-// ** Import icons
-
-// ** Import assets
-
-// ** Import pages
-
-// ** Import third party
-
-// ** Import shared components
-import Modal from "../../shared-components/Modal";
-
 // ** Import components
-import Table from "../../shared-components/table/PaginatedTable";
-
-// ** Import sub pages / sections
-
-// ** Import config
-
-// ** Import state manager
-
-// ** Import utils / lib
-
-// ** Import hooks
-
-// ** Import APIs
-
-// ** Import styles
+import Table from "../components/paginatedTable/PaginatedTable";
+import Modal from "../components/Modal";
 
 // ** Import Types
-import { EmployeesInterface } from "../../types/employeesType";
+import { EmployeesInterface } from "../types/employeesType";
 
 export default function Home() {
 	const storedEmployeeList: Array<EmployeesInterface> = JSON.parse(
@@ -66,7 +42,12 @@ export default function Home() {
 			<h2 className="mb-8 text-center text-xl font-bold">Current Employees</h2>
 			<p>List of all the currently registered employees</p>
 
-			<Table list={employeeList} deleteItem={handleDeleteEmployee} headers={headers} paginateOptions={[5, 10, 20, 50]} />
+			<Table
+				data={employeeList}
+				action={handleDeleteEmployee}
+				headers={headers}
+				paginateOptions={[5, 10, 20, 50]}
+			/>
 
 			<Modal ref={modalRef}>
 				<p>Employee deleted successfully</p>
