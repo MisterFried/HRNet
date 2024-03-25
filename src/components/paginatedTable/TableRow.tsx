@@ -30,7 +30,7 @@ export default function TableRow({ employee, headers, deleteItem }: TableRowInte
 			<td className="border-[1px] border-gray-400 p-2 px-4">
 				<button
 					onClick={() => deleteItem(employee.id)}
-					className="rounded-md bg-red-500 p-2 text-white transition-all hover:bg-red-700 focus:bg-red-700"
+					className="rounded-md bg-red-600 p-2 font-semibold text-white transition-all hover:bg-red-800 focus:bg-red-800"
 				>
 					Delete
 				</button>
