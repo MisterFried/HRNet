@@ -38,7 +38,7 @@ export default function Home() {
 	] as Array<{ title: string; sortText: keyof EmployeesInterface }>;
 
 	return (
-		<main className="mx-auto flex w-fit flex-col gap-4 p-4">
+		<main className="mx-auto flex w-full max-w-[1240px] flex-col gap-4 p-4">
 			<h2 className="mb-8 text-center text-xl font-bold">Current Employees</h2>
 			<p>List of all the currently registered employees</p>
 			<Table

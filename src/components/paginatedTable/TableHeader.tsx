@@ -19,7 +19,7 @@ export default function OrderTh({
 	activeSort,
 }: OrderThProps) {
 	return (
-		<th className="relative w-fit border-[1px] border-gray-400 px-4 py-4 pr-8 transition-all">
+		<th className="relative whitespace-nowrap border-[1px] border-gray-400 px-4 py-4 pr-8 transition-all">
 			{title}
 			<ChevronUp
 				onClick={() => reorderAlphabetically("asc", sortText)}

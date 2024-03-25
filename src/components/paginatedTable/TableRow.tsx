@@ -21,7 +21,7 @@ export default function TableRow({ employee, headers, deleteItem }: TableRowInte
 				return (
 					<td
 						key={`td_${header.sortText}`}
-						className="border-[1px] border-gray-400 p-2 px-4"
+						className="whitespace-nowrap border-[1px] border-gray-400 p-2 px-4"
 					>
 						{employee[header.sortText]}
 					</td>

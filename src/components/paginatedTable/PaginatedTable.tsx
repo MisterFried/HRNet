@@ -124,7 +124,7 @@ export default function PaginatedTable({
 	return (
 		<>
 			{/* Pagination and filter */}
-			<section className="flex justify-between gap-4">
+			<section className="flex flex-col justify-between gap-4 p-1 sm:flex-row">
 				<div>
 					{adjustedPaginatedOptions.length > 1 && filteredEmployees.length > 0 && (
 						<label className="flex items-center gap-2" htmlFor="paginate">
@@ -159,49 +159,53 @@ export default function PaginatedTable({
 			</section>
 
 			{/* Table */}
-			<table>
-				<thead>
-					<tr className="bg-main-200 font-special">
-						{headers.map(header => {
-							return (
-								<TableHeader
-									key={`th_${header.sortText}`}
-									title={header.title}
-									sortText={header.sortText}
-									reorderAlphabetically={handleSort}
-									activeSort={`${parameters.sort[0]}_${parameters.sort[1]}`}
-								/>
-							);
-						})}
+			<div className="overflow-x-auto">
+				<table className="mx-auto">
+					<thead>
+						<tr className="bg-main-200 font-special">
+							{headers.map(header => {
+								return (
+									<TableHeader
+										key={`th_${header.sortText}`}
+										title={header.title}
+										sortText={header.sortText}
+										reorderAlphabetically={handleSort}
+										activeSort={`${parameters.sort[0]}_${parameters.sort[1]}`}
+									/>
+								);
+							})}
 
-						<th className="relative border-[1px] border-gray-400 px-4 py-4">Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					{paginatedEmployees.length === 0 ? (
-						<tr className="even:bg-main-100">
-							<td
-								colSpan={10}
-								className="border-[1px] border-gray-400 p-2 px-4 text-center"
-							>
-								No records to display !
-							</td>
+							<th className="relative border-[1px] border-gray-400 px-4 py-4">
+								Actions
+							</th>
 						</tr>
-					) : (
-						paginatedEmployees.map(employee => (
-							<TableRow
-								key={employee.id}
-								employee={employee}
-								headers={headers}
-								deleteItem={action}
-							/>
-						))
-					)}
-				</tbody>
-			</table>
+					</thead>
+					<tbody>
+						{paginatedEmployees.length === 0 ? (
+							<tr className="even:bg-main-100">
+								<td
+									colSpan={10}
+									className="border-[1px] border-gray-400 p-2 px-4 text-center"
+								>
+									No records to display !
+								</td>
+							</tr>
+						) : (
+							paginatedEmployees.map(employee => (
+								<TableRow
+									key={employee.id}
+									employee={employee}
+									headers={headers}
+									deleteItem={action}
+								/>
+							))
+						)}
+					</tbody>
+				</table>
+			</div>
 
 			{/* Per page display and page navigation */}
-			<section className="flex justify-between gap-4">
+			<section className="flex flex-col justify-between gap-4 sm:flex-row">
 				<span className="text-lg">
 					{filteredEmployees.length === 0
 						? "Showing 0 records"

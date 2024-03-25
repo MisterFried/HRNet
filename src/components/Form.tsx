@@ -110,7 +110,7 @@ export default function Form() {
 		<>
 			<form
 				onSubmit={handleSubmit(onSubmit)}
-				className="flex flex-col gap-4 rounded-lg border-[1px] border-gray-300 p-4"
+				className="w-70 flex flex-col gap-4 rounded-lg border-[1px] border-gray-300 p-4 sm:w-80"
 			>
 				<TextInput
 					label="First Name"
