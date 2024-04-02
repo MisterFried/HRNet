@@ -15,15 +15,49 @@ export default function sortEmployees(
 ) {
 	if (order === "asc") {
 		employeeList.sort((a, b) => {
-			if (a[field] < b[field]) return -1;
-			if (a[field] > b[field]) return 1;
-			return 0;
+			if (typeof a[field] === "number" && typeof b[field] === "number") {
+				if (a[field] < b[field]) return -1;
+				if (a[field] > b[field]) return 1;
+				return 0;
+			} else if (
+				typeof a[field] === "string" &&
+				typeof b[field] === "string"
+			) {
+				if (
+					(a[field] as string).toLowerCase() <
+					(b[field] as string).toLowerCase()
+				)
+					return -1;
+				if (
+					(a[field] as string).toLowerCase() >
+					(b[field] as string).toLowerCase()
+				)
+					return 1;
+				return 0;
+			} else return 0;
 		});
 	} else if (order === "desc") {
 		employeeList.sort((a, b) => {
-			if (a[field] > b[field]) return -1;
-			if (a[field] < b[field]) return 1;
-			return 0;
+			if (typeof a[field] === "number" && typeof b[field] === "number") {
+				if (a[field] < b[field]) return 1;
+				if (a[field] > b[field]) return -1;
+				return 0;
+			} else if (
+				typeof a[field] === "string" &&
+				typeof b[field] === "string"
+			) {
+				if (
+					(a[field] as string).toLowerCase() <
+					(b[field] as string).toLowerCase()
+				)
+					return 1;
+				if (
+					(a[field] as string).toLowerCase() >
+					(b[field] as string).toLowerCase()
+				)
+					return -1;
+				return 0;
+			} else return 0;
 		});
 	}
 
