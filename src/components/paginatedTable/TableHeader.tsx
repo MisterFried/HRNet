@@ -8,7 +8,10 @@ import { EmployeesInterface } from "../../types/employeesType";
 interface OrderThProps {
 	title: string;
 	sortText: keyof EmployeesInterface;
-	reorderAlphabetically: (order: "asc" | "desc", field: keyof EmployeesInterface) => void;
+	reorderAlphabetically: (
+		order: "asc" | "desc",
+		field: keyof EmployeesInterface
+	) => void;
 	activeSort: string;
 }
 
@@ -21,14 +24,20 @@ export default function OrderTh({
 	return (
 		<th className="relative whitespace-nowrap border-[1px] border-gray-400 px-4 py-4 pr-8 transition-all">
 			{title}
-			<ChevronUp
+			<button
 				onClick={() => reorderAlphabetically("asc", sortText)}
 				className={`${activeSort === `${sortText}_asc` ? "opacity-100" : "opacity-40"} absolute bottom-2/4 right-1 cursor-pointer transition-all`}
-			/>
-			<ChevronDown
+				aria-label={`Reorder by ${sortText} in ascending order`}
+			>
+				<ChevronUp />
+			</button>
+			<button
 				onClick={() => reorderAlphabetically("desc", sortText)}
 				className={`${activeSort === `${sortText}_desc` ? "opacity-100" : "opacity-40"} absolute right-1 top-2/4 cursor-pointer transition-all`}
-			/>
+				aria-label={`Reorder by ${sortText} in descending order`}
+			>
+				<ChevronDown />
+			</button>
 		</th>
 	);
 }
