@@ -22,19 +22,19 @@ This repository also contains lighthouse performance comparison between the JQue
 
 ### Create employee
 
-The "Create employee" page features a form with data validation using react-hook-forms and zod. Upon successful form submission, a new employee record will be saved in the user's localStorage (to prevent data loss caused by page refresh / closure).
+The "Create employee" page features a form with data validation using react-hook-forms and zod. Upon successful form submission, a new employee record will be saved in the application store (using redux).
 The page features two custom built components:
 - A date picker with built in data validation to prevent futur dates.
 - A modal component.
 
 ### Display employees
 
-The "Display employees" page retrieves all employee records stored in the localStorage and display them using a custom table component.
+The "Display employees" page retrieves all employee records stored in the application store and display them using a custom table component.
 This table component includes several features:
 - Pagination functionality enabling users to select the number of records displayed per page.
 - Sorting options allowing records the be arranged in ascending or descending order based on any field.
 - Filtering capability based on user-input text.
-- Action section enabling employee deletion from localStorage.
+- Action section enabling employee deletion from the store.
 
 ## Run locally
 

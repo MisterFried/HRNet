@@ -1,32 +1,36 @@
 // ** Import core packages
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 // ** Import components
 import Table from "../components/paginatedTable/PaginatedTable";
 import Modal from "../components/Modal";
 
+// ** Import store
+import { deleteEmployee } from "../state/employeeStore";
+
 // ** Import Types
 import { EmployeesInterface } from "../types/employeesType";
+import { RootState } from "../state/store";
 
 export default function Home() {
-	const storedEmployeeList: Array<EmployeesInterface> = JSON.parse(
-		localStorage.getItem("employee") || "[]"
-	);
+	const employeeStore = useSelector((state: RootState) => state.employee);
+	const dispatch = useDispatch();
+
 	const [employeeList, setEmployeeList] =
-		useState<Array<EmployeesInterface>>(storedEmployeeList);
+		useState<Array<EmployeesInterface>>(employeeStore);
 
 	const modalRef = useRef<HTMLDialogElement | null>(null);
 
 	function handleDeleteEmployee(id: string) {
-		const newEmployeeList = employeeList.filter(
-			employee => employee.id !== id
-		);
-
-		localStorage.setItem("employee", JSON.stringify(newEmployeeList));
-		setEmployeeList(newEmployeeList);
+		dispatch(deleteEmployee(id));
 
 		modalRef.current?.showModal();
 	}
+
+	useEffect(() => {
+		setEmployeeList(employeeStore);
+	}, [employeeStore]);
 
 	const headers = [
 		{ title: "First Name", sortText: "firstName" },

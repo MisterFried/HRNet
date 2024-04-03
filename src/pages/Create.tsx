@@ -1,21 +1,32 @@
+// ** Import core packages
+import { useDispatch, useSelector } from "react-redux";
+
 // ** Import sub pages / sections
 import Form from "../components/Form";
 
 // ** Import utils / lib
 import dummyEmployees from "../data/employees";
 
+// ** Import store
+import { resetEmployees, setEmployees } from "../state/employeeStore";
+
+// ** Import types
+import { RootState } from "../state/store";
+
 export default function Create() {
+	const employeeStore = useSelector((state: RootState) => state.employee);
+	const dispatch = useDispatch();
+
 	function logEmployeeList() {
-		const data = JSON.parse(localStorage.getItem("employee") || "[]");
-		console.log(data);
+		console.log(employeeStore);
 	}
 
 	function resetEmployeeList() {
-		localStorage.setItem("employee", JSON.stringify([]));
+		dispatch(resetEmployees());
 	}
 
 	function setDummyEmployeeList() {
-		localStorage.setItem("employee", JSON.stringify(dummyEmployees));
+		dispatch(setEmployees(dummyEmployees));
 	}
 
 	return (

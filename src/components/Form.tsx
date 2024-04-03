@@ -1,5 +1,6 @@
 // ** Import core packages
 import { useRef } from "react";
+import { useDispatch } from "react-redux";
 
 // ** Import third party
 import { Controller, useForm } from "react-hook-form";
@@ -18,6 +19,9 @@ import DatePicker from "./DatePicker";
 import states from "../data/states";
 import departments from "../data/departments";
 import { zeroPad } from "../utils/calendarHelpers";
+
+// ** Import store
+import { addEmployee } from "../state/employeeStore";
 
 // Form data schema
 const schema = z.object({
@@ -66,6 +70,7 @@ const schema = z.object({
 export type FormFieldsType = z.infer<typeof schema>;
 
 export default function Form() {
+	const dispatch = useDispatch();
 	const modalRef = useRef<HTMLDialogElement | null>(null);
 
 	const {
@@ -98,19 +103,14 @@ export default function Form() {
 				street: data.street,
 				city: data.city,
 				state: data.state,
-				zip: data.zip,
+				zip: String(data.zip),
 				department: data.department,
 			};
 
-			const employeeList = JSON.parse(
-				localStorage.getItem("employee") || "[]"
-			);
-			employeeList.push(newEmployee);
-			localStorage.setItem("employee", JSON.stringify(employeeList));
-
+			dispatch(addEmployee(newEmployee));
 			modalRef.current?.showModal();
 		} catch (error) {
-			// Used to simulate errors from the server, won't occur when using local storage
+			// Used to simulate errors from the server, won't occur when using redux
 			setError("root", { message: "An error occurred on our server" });
 		}
 	}
