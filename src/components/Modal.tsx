@@ -20,9 +20,18 @@ const Modal = forwardRef(function ModalComponent(
 	}
 
 	return (
-		<dialog ref={ref} onClick={closeModal} className="rounded-md shadow-md">
-			<div className="relative px-16 py-8" onClick={e => e.stopPropagation()}>
+		<dialog
+			ref={ref}
+			onClick={closeModal}
+			data-testid="modal"
+			className="rounded-md shadow-md"
+		>
+			<div
+				className="relative px-16 py-8"
+				onClick={e => e.stopPropagation()}
+			>
 				<button
+					data-testid="modal-close"
 					className="absolute right-2 top-2 transition-all hover:scale-110 focus:scale-110"
 					onClick={closeModal}
 				>

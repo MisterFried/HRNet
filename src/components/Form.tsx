@@ -37,9 +37,16 @@ const schema = z.object({
 			/^(?:[A-Za-z]+(?:[' -][A-Za-z]+)?){3,}$/,
 			"Last name can only contain letters and hyphens"
 		),
-	dateOfBirth: z.coerce.date().max(new Date(), "Date of birth must be in the past"),
-	startDate: z.coerce.date().max(new Date(), "Start date must be in the past"),
-	street: z.string().min(1, "Street is required").min(2, "Street must be at least 3 characters"),
+	dateOfBirth: z.coerce
+		.date()
+		.max(new Date(), "Date of birth must be in the past"),
+	startDate: z.coerce
+		.date()
+		.max(new Date(), "Start date must be in the past"),
+	street: z
+		.string()
+		.min(1, "Street is required")
+		.min(2, "Street must be at least 3 characters"),
 	city: z
 		.string()
 		.min(1, "City is required")
@@ -95,7 +102,9 @@ export default function Form() {
 				department: data.department,
 			};
 
-			const employeeList = JSON.parse(localStorage.getItem("employee") || "[]");
+			const employeeList = JSON.parse(
+				localStorage.getItem("employee") || "[]"
+			);
 			employeeList.push(newEmployee);
 			localStorage.setItem("employee", JSON.stringify(employeeList));
 
@@ -111,6 +120,7 @@ export default function Form() {
 			<form
 				onSubmit={handleSubmit(onSubmit)}
 				className="w-70 flex flex-col gap-4 rounded-lg border-[1px] border-gray-300 p-4 sm:w-80"
+				data-testid="form"
 			>
 				<TextInput
 					label="First Name"
@@ -199,7 +209,9 @@ export default function Form() {
 					type="submit"
 					disabled={isSubmitting}
 				/>
-				{errors.root && <p className="text-red-500">{errors.root.message}</p>}
+				{errors.root && (
+					<p className="text-red-500">{errors.root.message}</p>
+				)}
 			</form>
 			<Modal ref={modalRef}>
 				<p>Employee created successfully</p>

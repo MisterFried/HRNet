@@ -28,7 +28,7 @@ export default function Home() {
 	const headers = [
 		{ title: "First Name", sortText: "firstName" },
 		{ title: "Last Name", sortText: "lastName" },
-		{ title: "Start Name", sortText: "startDate" },
+		{ title: "Start Date", sortText: "startDate" },
 		{ title: "Department", sortText: "department" },
 		{ title: "Date of Birth", sortText: "dateOfBirth" },
 		{ title: "Street", sortText: "street" },

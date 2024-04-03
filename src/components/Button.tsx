@@ -6,10 +6,16 @@ interface ButtonProps {
 	type?: "button" | "submit" | "reset";
 }
 
-export default function Button({ label, onClick, disabled = false, type = "button" }: ButtonProps) {
+export default function Button({
+	label,
+	onClick,
+	disabled = false,
+	type = "button",
+}: ButtonProps) {
 	return (
 		<button
 			type={type}
+			data-testid={`${type === "submit" ? "submit" : ""}`}
 			disabled={disabled}
 			onClick={onClick}
 			className={`relative isolation-auto z-10 overflow-hidden

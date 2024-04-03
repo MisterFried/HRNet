@@ -34,7 +34,9 @@ export default function PaginatedTable({
 	const [totalEmployees, setTotalEmployees] = useState(data); // All stored employees
 	const [filteredEmployees, setFilteredEmployees] =
 		useState<Array<EmployeesInterface>>(totalEmployees); // Employees after filtering
-	const [paginatedEmployees, setPaginatedEmployees] = useState<Array<EmployeesInterface>>([]); // Filtered employees after pagination
+	const [paginatedEmployees, setPaginatedEmployees] = useState<
+		Array<EmployeesInterface>
+	>([]); // Filtered employees after pagination
 
 	// Filter / sort parameters
 	const [parameters, setParameters] = useState<parametersInterface>({
@@ -44,8 +46,11 @@ export default function PaginatedTable({
 
 	// Remove unnecessary pagination options (greater than the number of items)
 	paginateOptions.sort((a, b) => a - b);
-	const index = paginateOptions.findIndex(option => option >= filteredEmployees.length);
-	const adjustedPaginatedOptions = paginateOptions.slice(0, index + 1);
+	const index = paginateOptions.findIndex(
+		option => option >= filteredEmployees.length
+	);
+	const adjustedPaginatedOptions =
+		index === -1 ? paginateOptions : paginateOptions.slice(0, index + 1);
 
 	// Pagination params (items per page and current page)
 	const [paginationParams, setPaginationParams] = useState({
@@ -53,7 +58,9 @@ export default function PaginatedTable({
 		page: 0,
 	});
 
-	let totalPage = Math.ceil(filteredEmployees.length / paginationParams.perPage);
+	let totalPage = Math.ceil(
+		filteredEmployees.length / paginationParams.perPage
+	);
 	if (filteredEmployees.length === 0) totalPage = 1;
 
 	// Calculate the interval of currently displayed items
@@ -89,8 +96,15 @@ export default function PaginatedTable({
 	}
 
 	// Sort the items and update the sort parameters
-	function handleSort(order: "asc" | "desc", field: keyof EmployeesInterface) {
-		const sortedEmployees = sortEmployees([...filteredEmployees], field, order);
+	function handleSort(
+		order: "asc" | "desc",
+		field: keyof EmployeesInterface
+	) {
+		const sortedEmployees = sortEmployees(
+			[...filteredEmployees],
+			field,
+			order
+		);
 
 		setParameters({ ...parameters, sort: [field, order] });
 		setFilteredEmployees(sortedEmployees);
@@ -126,35 +140,41 @@ export default function PaginatedTable({
 			{/* Pagination and filter */}
 			<section className="flex flex-col justify-between gap-4 p-1 sm:flex-row">
 				<div>
-					{adjustedPaginatedOptions.length > 1 && filteredEmployees.length > 0 && (
-						<label className="flex items-center gap-2" htmlFor="paginate">
-							Show{" "}
-							<select
-								name="paginate"
-								id="paginate"
-								onChange={e =>
-									setPaginationParams({
-										...paginationParams,
-										perPage: Number(e.target.value),
-									})
-								}
-								className="border-gray- 300 rounded-md border p-2"
+					{adjustedPaginatedOptions.length > 1 &&
+						filteredEmployees.length > 0 && (
+							<label
+								className="flex items-center gap-2"
+								htmlFor="paginate"
 							>
-								{adjustedPaginatedOptions.map(option => (
-									<option key={option} value={option}>
-										{option}
-									</option>
-								))}
-							</select>{" "}
-							records
-						</label>
-					)}
+								Show{" "}
+								<select
+									name="paginate"
+									id="paginate"
+									onChange={e =>
+										setPaginationParams({
+											...paginationParams,
+											perPage: Number(e.target.value),
+										})
+									}
+									className="border-gray- 300 rounded-md border p-2"
+									data-testid="paginate"
+								>
+									{adjustedPaginatedOptions.map(option => (
+										<option key={option} value={option}>
+											{option}
+										</option>
+									))}
+								</select>{" "}
+								records
+							</label>
+						)}
 				</div>
 				<input
 					type="text"
 					placeholder="Search"
 					onChange={e => handleFilter(e.target.value)}
 					className="rounded-md border-[1px] border-gray-300 p-2"
+					data-testid="filter"
 				/>
 			</section>
 
@@ -175,7 +195,10 @@ export default function PaginatedTable({
 								);
 							})}
 
-							<th className="relative border-[1px] border-gray-400 px-4 py-4">
+							<th
+								className="relative border-[1px] border-gray-400 px-4 py-4"
+								data-testid="table-header-action"
+							>
 								Actions
 							</th>
 						</tr>
@@ -225,6 +248,7 @@ export default function PaginatedTable({
 								})
 							}
 							className="rounded-sm border-[1px] bg-gray-300 px-4 py-2 transition-all hover:bg-gray-400 focus:bg-gray-400"
+							data-testid="previous-page"
 						>
 							Previous page
 						</button>
@@ -238,6 +262,7 @@ export default function PaginatedTable({
 								})
 							}
 							className="rounded-sm border-[1px] bg-gray-300 px-4 py-2 transition-all hover:bg-gray-400 focus:bg-gray-400"
+							data-testid="next-page"
 						>
 							Next page
 						</button>

@@ -11,7 +11,11 @@ interface TableRowInterface {
 	deleteItem: (id: string) => void;
 }
 
-export default function TableRow({ employee, headers, deleteItem }: TableRowInterface) {
+export default function TableRow({
+	employee,
+	headers,
+	deleteItem,
+}: TableRowInterface) {
 	return (
 		<tr
 			key={employee.id}
@@ -22,6 +26,7 @@ export default function TableRow({ employee, headers, deleteItem }: TableRowInte
 					<td
 						key={`td_${header.sortText}`}
 						className="whitespace-nowrap border-[1px] border-gray-400 p-2 px-4"
+						data-testid={`table-data-${header.sortText}`}
 					>
 						{employee[header.sortText]}
 					</td>

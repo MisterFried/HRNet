@@ -12,7 +12,10 @@ export default function Header() {
 			<h1 className="text-2xl font-semibold">HR Net</h1>
 			<menu className="flex gap-4">
 				<Button label="View employees" onClick={() => navigate("/")} />
-				<Button label="Create employees" onClick={() => navigate("/create")} />
+				<Button
+					label="Create employee"
+					onClick={() => navigate("/create")}
+				/>
 			</menu>
 		</header>
 	);

@@ -13,7 +13,13 @@ interface propsInterface {
 	errors: FieldErrors<FormFieldsType>;
 }
 
-export default function TextInput({ label, placeholder, name, register, errors }: propsInterface) {
+export default function TextInput({
+	label,
+	placeholder,
+	name,
+	register,
+	errors,
+}: propsInterface) {
 	return (
 		<div className="flex flex-col gap-1">
 			<label htmlFor={name} className="text-sm font-medium">
@@ -24,9 +30,12 @@ export default function TextInput({ label, placeholder, name, register, errors }
 				{...register(name)}
 				id={name}
 				placeholder={placeholder}
-				className="rounded-md border-[1px] border-gray-300 px-2 py-1 "
+				className="rounded-md border-[1px] border-gray-300 px-2 py-1"
+				data-testid={`${name}-input`}
 			/>
-			{errors[name] && <span className="text-red-400">{errors[name]?.message}</span>}
+			{errors[name] && (
+				<span className="text-red-400">{errors[name]?.message}</span>
+			)}
 		</div>
 	);
 }

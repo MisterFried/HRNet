@@ -22,12 +22,16 @@ export default function OrderTh({
 	activeSort,
 }: OrderThProps) {
 	return (
-		<th className="relative whitespace-nowrap border-[1px] border-gray-400 px-4 py-4 pr-8 transition-all">
+		<th
+			className="relative whitespace-nowrap border-[1px] border-gray-400 px-4 py-4 pr-8 transition-all"
+			data-testid={`table-header-${sortText}`}
+		>
 			{title}
 			<button
 				onClick={() => reorderAlphabetically("asc", sortText)}
 				className={`${activeSort === `${sortText}_asc` ? "opacity-100" : "opacity-40"} absolute bottom-2/4 right-1 cursor-pointer transition-all`}
 				aria-label={`Reorder by ${sortText} in ascending order`}
+				data-testid={`${sortText}-asc-reorder`}
 			>
 				<ChevronUp />
 			</button>
@@ -35,6 +39,7 @@ export default function OrderTh({
 				onClick={() => reorderAlphabetically("desc", sortText)}
 				className={`${activeSort === `${sortText}_desc` ? "opacity-100" : "opacity-40"} absolute right-1 top-2/4 cursor-pointer transition-all`}
 				aria-label={`Reorder by ${sortText} in descending order`}
+				data-testid={`${sortText}-desc-reorder`}
 			>
 				<ChevronDown />
 			</button>
