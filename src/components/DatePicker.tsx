@@ -30,7 +30,13 @@ interface DatePickerProps {
 	errors: FieldErrors<FormFieldsType>;
 }
 
-export default function DatePicker({ label, name, value, setValue, errors }: DatePickerProps) {
+export default function DatePicker({
+	label,
+	name,
+	value,
+	setValue,
+	errors,
+}: DatePickerProps) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [year, setYear] = useState(THIS_YEAR);
 	const [month, setMonth] = useState(THIS_MONTH);
@@ -44,7 +50,8 @@ export default function DatePicker({ label, name, value, setValue, errors }: Dat
 	// Close the calendar when clicking outside
 	const calendarRef = useRef<HTMLDivElement>(null);
 	document.addEventListener("click", e => {
-		if (!calendarRef.current?.contains(e.target as HTMLElement)) setIsOpen(false);
+		if (!calendarRef.current?.contains(e.target as HTMLElement))
+			setIsOpen(false);
 	});
 
 	// Add empty days slot until the start of the month
@@ -54,7 +61,9 @@ export default function DatePicker({ label, name, value, setValue, errors }: Dat
 
 	// Add days slot to the month
 	for (let day = 1; day <= daysInMonth; day++) {
-		const dateValue = new Date(`${year}-${zeroPad(month + 1)}-${zeroPad(day)}`);
+		const dateValue = new Date(
+			`${year}-${zeroPad(month + 1)}-${zeroPad(day)}`
+		);
 
 		days.push(
 			<button
@@ -72,7 +81,11 @@ export default function DatePicker({ label, name, value, setValue, errors }: Dat
 	}
 
 	return (
-		<div className="flex flex-col gap-1" aria-label="date picker" ref={calendarRef}>
+		<div
+			className="flex flex-col gap-1"
+			aria-label="date picker"
+			ref={calendarRef}
+		>
 			<p className="text-sm font-medium">{label}</p>
 			<div className="relative rounded-md border-[1px] border-gray-300 p-2 transition-all">
 				<span>{value.toDateString()}</span>
@@ -148,7 +161,9 @@ export default function DatePicker({ label, name, value, setValue, errors }: Dat
 					</div>
 				)}
 			</div>
-			{errors[name] && <span className="text-red-400">{errors[name]?.message}</span>}
+			{errors[name] && (
+				<span className="text-red-400">{errors[name]?.message}</span>
+			)}
 		</div>
 	);
 }

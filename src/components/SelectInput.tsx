@@ -40,7 +40,9 @@ export default function SelectInput({
 					</option>
 				))}
 			</select>
-			{errors[name] && <span className="text-red-400">{errors[name]?.message}</span>}
+			{errors[name] && (
+				<span className="text-red-400">{errors[name]?.message}</span>
+			)}
 		</div>
 	);
 }

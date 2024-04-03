@@ -7,7 +7,10 @@ import { EmployeesInterface } from "../types/employeesType";
  * @param value - The value to search for in the employee properties.
  * @returns The filtered array of employees.
  */
-export default function filterEmployees(employeeList: Array<EmployeesInterface>, value: string) {
+export default function filterEmployees(
+	employeeList: Array<EmployeesInterface>,
+	value: string
+) {
 	const filteredEmployeeList = employeeList.filter(employee => {
 		return (
 			employee.firstName.toLowerCase().includes(value.toLowerCase()) ||

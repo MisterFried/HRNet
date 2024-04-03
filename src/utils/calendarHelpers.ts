@@ -13,7 +13,20 @@ const WEEK_DAYS = {
 	sat: "Saturday",
 };
 
-const MONTHS = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+const MONTHS = [
+	"jan",
+	"feb",
+	"mar",
+	"apr",
+	"may",
+	"jun",
+	"jul",
+	"aug",
+	"sep",
+	"oct",
+	"nov",
+	"dec",
+];
 const YEAR_MONTHS = {
 	jan: "January",
 	feb: "February",
