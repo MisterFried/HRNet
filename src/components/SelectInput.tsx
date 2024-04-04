@@ -1,7 +1,5 @@
-// ** Import third party
-import { FieldErrors, UseFormRegister } from "react-hook-form";
-
 // ** Import Types
+import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { FormFieldsType } from "./Form";
 
 // ** Types
@@ -14,6 +12,17 @@ interface propsInterface {
 	setValue: (name: keyof FormFieldsType, value: string) => void;
 }
 
+/**
+ * Renders a select input field with a label, specified options, and registration / error handling.
+ *
+ * @param label - The displayed label
+ * @param name - The name attribute for the select input
+ * @param options - The array of options
+ * @param register - The function (from react-hook-form) to register the selected option
+ * @param errors - The errors object (from react-hook-form) containing validation errors
+ * @param setValue - The function (from react-hook-form) to set the active value
+ * @return The select input component
+ */
 export default function SelectInput({
 	label,
 	name,

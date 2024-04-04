@@ -4,16 +4,30 @@ import Form from "../components/Form";
 // ** Import utils / lib
 import dummyEmployees from "../data/employees";
 
+/**
+ * Returns the "Create Employee" page
+ * @returns Create page
+ */
 export default function Create() {
+
+	/**
+	 * Fetch the employee list from localStorage and log it
+	 */
 	function logEmployeeList() {
 		const data = JSON.parse(localStorage.getItem("employee") || "[]");
 		console.log(data);
 	}
 
+	/**
+	 * Reset the employee list to an empty array
+	 */
 	function resetEmployeeList() {
 		localStorage.setItem("employee", JSON.stringify([]));
 	}
 
+	/**
+	 * Set the employee list to a dummy array
+	 */
 	function setDummyEmployeeList() {
 		localStorage.setItem("employee", JSON.stringify(dummyEmployees));
 	}

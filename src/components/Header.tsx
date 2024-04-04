@@ -4,6 +4,11 @@ import { useNavigate } from "react-router-dom";
 // ** Import components
 import Button from "./Button";
 
+/**
+ * Returns the main header section of the application.
+ *
+ * @return The Header component
+ */
 export default function Header() {
 	const navigate = useNavigate();
 

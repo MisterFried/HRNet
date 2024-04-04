@@ -2,25 +2,24 @@
 import { ChevronDown, ChevronUp } from "lucide-react";
 
 // ** Import Types
-import { EmployeesInterface } from "../../types/employeesType";
+import { TableHeaderProps } from "../../types/paginatedTableTypes";
 
-// ** Types
-interface OrderThProps {
-	title: string;
-	sortText: keyof EmployeesInterface;
-	reorderAlphabetically: (
-		order: "asc" | "desc",
-		field: keyof EmployeesInterface
-	) => void;
-	activeSort: string;
-}
-
-export default function OrderTh({
+/**
+ * Renders a table header cell with title and sorting buttons
+ *
+ * @param title - The displayed title
+ * @param sortText - The property name used for sorting
+ * @param reorderAlphabetically - The function that reorder employee records
+ * (taking order and sortText as parameters)
+ * @param activeSort - The currently active sorting (structured as 'sortText_order')
+ * @return The rendered table header cell with sorting buttons.
+ */
+export default function TableHeader({
 	title,
 	sortText,
 	reorderAlphabetically,
 	activeSort,
-}: OrderThProps) {
+}: TableHeaderProps) {
 	return (
 		<th
 			className="relative whitespace-nowrap border-[1px] border-gray-400 px-4 py-4 pr-8 transition-all"

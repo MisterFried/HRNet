@@ -42,6 +42,12 @@ const YEAR_MONTHS = {
 	dec: "December",
 };
 
+/**
+ * Converts a number to a string and pads it with zeros if it is a single digit.
+ *
+ * @param num - The number to be zero-padded.
+ * @return The zero-padded number as a string.
+ */
 function zeroPad(num: number) {
 	return num.toString().padStart(2, "0");
 }
@@ -68,10 +74,22 @@ function getMonthStart(year: number, month: number) {
 	return day;
 }
 
+/**
+ * Retrieves the name of the month based on the provided month number.
+ *
+ * @param month - The month number to retrieve the name for.
+ * @return The name of the month.
+ */
 function getMonth(month: number) {
 	return MONTHS[month] as keyof typeof YEAR_MONTHS;
 }
 
+/**
+ * Retrieves the full month name based on the provided month number.
+ *
+ * @param month - The month number to retrieve the full name for.
+ * @return The full name of the month.
+ */
 function getFullMonth(month: number) {
 	const monthShort = getMonth(month);
 	return YEAR_MONTHS[monthShort];

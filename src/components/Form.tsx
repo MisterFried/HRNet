@@ -19,14 +19,16 @@ import states from "../data/states";
 import departments from "../data/departments";
 import { zeroPad } from "../utils/calendarHelpers";
 
-// Form data schema
+/**
+ * Employee data validation schema
+ */
 const schema = z.object({
 	firstName: z
 		.string()
 		.min(1, "First name is required")
 		.min(3, "First name must be at least 3 characters")
 		.regex(
-			/^(?:[A-Za-z]+(?:[' -][A-Za-z]+)?){3,}$/,
+			/^(?:[A-Za-z]+(?:[' -][A-Za-z]+)?){3,}$/, // Allow letters, hyphens, apostrophes and spaces
 			"First name can only contain letters and hyphens"
 		),
 	lastName: z
@@ -34,7 +36,7 @@ const schema = z.object({
 		.min(1, "Last name is required")
 		.min(3, "Last name must be at least 3 characters")
 		.regex(
-			/^(?:[A-Za-z]+(?:[' -][A-Za-z]+)?){3,}$/,
+			/^(?:[A-Za-z]+(?:[' -][A-Za-z]+)?){3,}$/, // Allow letters, hyphens, apostrophes and spaces
 			"Last name can only contain letters and hyphens"
 		),
 	dateOfBirth: z.coerce
@@ -51,7 +53,7 @@ const schema = z.object({
 		.string()
 		.min(1, "City is required")
 		.min(2, "City must be at least 3 characters")
-		.regex(/^[A-Za-z\s-]+$/, "City can only contain letters"),
+		.regex(/^[A-Za-z\s-]+$/, "City can only contain letters"), // Allow letters, spaces and hyphens
 	state: z.string().min(1, "State is required"),
 	zip: z.coerce
 		.number({
@@ -62,9 +64,12 @@ const schema = z.object({
 		.lte(99999, "Zip code must be at most 5 digits"),
 	department: z.string().min(1, "Department is required"),
 });
-
 export type FormFieldsType = z.infer<typeof schema>;
 
+/**
+ * Returns the form component used in the "Create Employee" page
+ * @returns Form
+ */
 export default function Form() {
 	const modalRef = useRef<HTMLDialogElement | null>(null);
 
@@ -86,11 +91,14 @@ export default function Form() {
 		},
 	});
 
+	/**
+	 * Create a new employee, add it to localStorage and show the confirmation modal
+	 * @param data - Form data
+	 */
 	function onSubmit(data: FormFieldsType) {
 		try {
-			const employeeID = uuidv4();
 			const newEmployee = {
-				id: employeeID,
+				id: uuidv4(),
 				dateOfBirth: `${data.dateOfBirth.getFullYear()}-${zeroPad(data.dateOfBirth.getMonth() + 1)}-${zeroPad(data.dateOfBirth.getDate())}`,
 				startDate: `${data.startDate.getFullYear()}-${zeroPad(data.startDate.getMonth() + 1)}-${zeroPad(data.startDate.getDate())}`,
 				firstName: data.firstName,
@@ -205,9 +213,9 @@ export default function Form() {
 					setValue={setValue}
 				/>
 				<Button
-					label={isSubmitting ? "Creation..." : "Create"}
 					type="submit"
-					disabled={isSubmitting}
+					label={isSubmitting ? "Creation..." : "Create"}
+					isDisabled={isSubmitting}
 				/>
 				{errors.root && (
 					<p className="text-red-500">{errors.root.message}</p>

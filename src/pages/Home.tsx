@@ -8,6 +8,10 @@ import Modal from "../components/Modal";
 // ** Import Types
 import { EmployeesInterface } from "../types/employeesType";
 
+/**
+ * Return the Home page
+ * @returns Home page
+ */
 export default function Home() {
 	const storedEmployeeList: Array<EmployeesInterface> = JSON.parse(
 		localStorage.getItem("employee") || "[]"
@@ -16,17 +20,6 @@ export default function Home() {
 		useState<Array<EmployeesInterface>>(storedEmployeeList);
 
 	const modalRef = useRef<HTMLDialogElement | null>(null);
-
-	function handleDeleteEmployee(id: string) {
-		const newEmployeeList = employeeList.filter(
-			employee => employee.id !== id
-		);
-
-		localStorage.setItem("employee", JSON.stringify(newEmployeeList));
-		setEmployeeList(newEmployeeList);
-
-		modalRef.current?.showModal();
-	}
 
 	const headers = [
 		{ title: "First Name", sortText: "firstName" },
@@ -39,6 +32,22 @@ export default function Home() {
 		{ title: "State", sortText: "state" },
 		{ title: "Zip", sortText: "zip" },
 	] as Array<{ title: string; sortText: keyof EmployeesInterface }>;
+
+	/**
+	 * Remove an employee from the employeeList state, update localStorage
+	 * and show the confirmation modal
+	 * @param id - The id of the employee to be deleted
+	 */
+	function handleDeleteEmployee(id: string) {
+		const newEmployeeList = employeeList.filter(
+			employee => employee.id !== id
+		);
+
+		localStorage.setItem("employee", JSON.stringify(newEmployeeList));
+		setEmployeeList(newEmployeeList);
+
+		modalRef.current?.showModal();
+	}
 
 	return (
 		<main className="mx-auto flex w-full max-w-[1240px] flex-col gap-4 p-4">

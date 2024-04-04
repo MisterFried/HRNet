@@ -4,21 +4,28 @@ import { ForwardedRef, forwardRef } from "react";
 // ** Import icons
 import { X } from "lucide-react";
 
-interface ModalProps {
-	children: React.ReactNode;
-}
-
+/**
+ * Returns the Modal component.
+ * The content of the modal is passed as children
+ * 
+ * @param ref - The ref of the modal
+ * 
+ */
 const Modal = forwardRef(function ModalComponent(
-	{ children }: ModalProps,
+	{ children }: { children: React.ReactNode },
 	ref: ForwardedRef<HTMLDialogElement | null>
 ) {
-	// Close when clicking outside or when clicking the close icon
+	/**
+	 * Closes the modal
+	 */
 	function closeModal() {
 		if (ref && "current" in ref && ref.current) {
 			ref.current.close();
 		}
 	}
 
+	// The modal will be closed when the user clicks on the backdrop (outside the dialog)
+	// or when the user clicks on the close button
 	return (
 		<dialog
 			ref={ref}
@@ -28,6 +35,8 @@ const Modal = forwardRef(function ModalComponent(
 		>
 			<div
 				className="relative px-16 py-8"
+				// Stops the click event from bubbling up to the parent dialog element
+				// and closing the modal
 				onClick={e => e.stopPropagation()}
 			>
 				<button

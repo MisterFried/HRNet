@@ -1,7 +1,5 @@
-// ** Import third party
-import { FieldErrors, UseFormRegister } from "react-hook-form";
-
 // ** Import Types
+import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { FormFieldsType } from "./Form";
 
 // ** Types
@@ -13,6 +11,16 @@ interface propsInterface {
 	errors: FieldErrors<FormFieldsType>;
 }
 
+/**
+ * Renders a text input component with label, placeholder and registration / error handling.
+ *
+ * @param label - The displayed label
+ * @param placeholder - The placeholder text
+ * @param name - The name attribute for the input field
+ * @param register - The function (from react-hook-form) for input field registration
+ * @param errors - The errors object (from react-hook-form) containing validation errors
+ * @return The rendered text input component
+ */
 export default function TextInput({
 	label,
 	placeholder,

@@ -4,9 +4,6 @@ import { useRef, useState } from "react";
 // ** Import icons
 import { ArrowLeftIcon, ArrowRightIcon, CalendarDays } from "lucide-react";
 
-// ** Import third party
-import { FieldErrors, UseFormSetValue } from "react-hook-form";
-
 // ** Import utils / lib
 import {
 	DAYS,
@@ -19,6 +16,7 @@ import {
 } from "../utils/calendarHelpers";
 
 // ** Import types
+import { FieldErrors, UseFormSetValue } from "react-hook-form";
 import { FormFieldsType } from "./Form";
 
 // ** Types
@@ -29,6 +27,18 @@ interface DatePickerProps {
 	setValue: UseFormSetValue<FormFieldsType>;
 	errors: FieldErrors<FormFieldsType>;
 }
+
+/**
+ * Renders a date picker component with a label and registration / error handling.
+ * This component needs to be wrapped in Controller element from react-hook-form.
+ *
+ * @param label - The displayed label
+ * @param name - The name attribute for the date picker
+ * @param value - The value for the date picker
+ * @param setValue - The function (from react-hook-form) to register the selected date
+ * @param  errors - The error object (from react-hook-form) containing validation errors
+ * @return The rendered date picker component
+ */
 
 export default function DatePicker({
 	label,
@@ -54,12 +64,13 @@ export default function DatePicker({
 			setIsOpen(false);
 	});
 
-	// Add empty days slot until the start of the month
+	//Create the content of the date picker by adding empty days and days slots (div)
+	// Empty days slot
 	for (let i = 0; i < firstDayOfMonth; i++) {
 		days.push(<div key={`empty-${i}`} className="bg-gray-300"></div>);
 	}
 
-	// Add days slot to the month
+	// Days slot
 	for (let day = 1; day <= daysInMonth; day++) {
 		const dateValue = new Date(
 			`${year}-${zeroPad(month + 1)}-${zeroPad(day)}`

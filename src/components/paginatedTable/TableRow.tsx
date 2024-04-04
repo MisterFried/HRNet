@@ -1,20 +1,21 @@
 // ** Import types
-import { EmployeesInterface } from "../../types/employeesType";
+import { TableRowInterface } from "../../types/paginatedTableTypes";
 
-// ** Types
-interface TableRowInterface {
-	employee: EmployeesInterface;
-	headers: Array<{
-		title: string;
-		sortText: keyof EmployeesInterface;
-	}>;
-	deleteItem: (id: string) => void;
-}
-
+/**
+ * Renders a table row for the given employee with the specified columns and a delete functionality.
+ *
+ * @param employee - The employee object to display
+ * @param headers - An array of objects containing the column sort text (and title despite not 
+ * being used here). This array defines which column is displayed as well as their order. The sortText 
+ * property is the associated property in the employee object (firstName, lastName, department, etc) 
+ * that will be used for sorting / filtering.
+ * @param deleteEmployee - The function to call when deleting an employee.
+ * @return The table row element.
+ */
 export default function TableRow({
 	employee,
 	headers,
-	deleteItem,
+	deleteEmployee,
 }: TableRowInterface) {
 	return (
 		<tr
@@ -34,7 +35,7 @@ export default function TableRow({
 			})}
 			<td className="border-[1px] border-gray-400 p-2 px-4">
 				<button
-					onClick={() => deleteItem(employee.id)}
+					onClick={() => deleteEmployee(employee.id)}
 					className="rounded-md bg-red-600 p-2 font-semibold text-white transition-all hover:bg-red-800 focus:bg-red-800"
 				>
 					Delete
